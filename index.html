@@ -519,62 +519,46 @@ footer p{
 
 <script>
 
-function selectProduct(product){
+const companySelect = document.getElementById("company");
 
-    document.getElementById("complaintForm").style.display = "block";
+companySelect.innerHTML = '<option value="">Select Company / Brand</option>';
 
-    document.getElementById("selectedProduct").innerText =
-        "Selected Product: " + product;
+let brands = [];
 
-    const companySelect = document.getElementById("company");
-
-    companySelect.innerHTML =
-        '<option value="">Select Company / Brand</option>';
-
-    let brands = [];
-
-    if(product === "LED"){
-        brands = ["Samsung","LG","Sony","Mi","TCL","Panasonic","OnePlus","Other"];
-    }
-
-    if(product === "AC"){
-        brands = ["Voltas","LG","Samsung","Daikin","Carrier","Blue Star","Hitachi","Other"];
-    }
-
-    if(product === "Refrigerator"){
-        brands = ["LG","Samsung","Whirlpool","Haier","Godrej","Panasonic","Other"];
-    }
-
-    if(product === "Washing Machine"){
-        brands = ["LG","Samsung","Whirlpool","IFB","Bosch","Haier","Godrej","Other"];
-    }
-
-    if(product === "Cooler"){
-        brands = ["Symphony","Bajaj","Crompton","Voltas","Kenstar","Orient","Other"];
-    }
-
-    if(product === "Microwave"){
-        brands = ["LG","Samsung","IFB","Panasonic","Bajaj","Godrej","Other"];
-    }
-
-    brands.forEach(function(brand){
-
-        let option = document.createElement("option");
-
-        option.value = brand;
-        option.textContent = brand;
-
-        companySelect.appendChild(option);
-
-    });
-
-    document.getElementById("complaintForm").scrollIntoView({
-        behavior: "smooth"
-    });
-
+if(product === "LED"){
+    brands = ["Samsung","LG","Sony","Mi","TCL","Panasonic","OnePlus","Other"];
 }
 
-</script>
+if(product === "AC"){
+    brands = ["Voltas","LG","Samsung","Daikin","Carrier","Blue Star","Hitachi","Other"];
+}
+
+if(product === "Refrigerator"){
+    brands = ["LG","Samsung","Whirlpool","Haier","Godrej","Panasonic","Other"];
+}
+
+if(product === "Washing Machine"){
+    brands = ["LG","Samsung","Whirlpool","IFB","Bosch","Haier","Godrej","Other"];
+}
+
+if(product === "Cooler"){
+    brands = ["Symphony","Bajaj","Crompton","Voltas","Kenstar","Orient","Other"];
+}
+
+if(product === "Microwave"){
+    brands = ["LG","Samsung","IFB","Panasonic","Bajaj","Godrej","Other"];
+}
+
+brands.forEach(function(brand){
+
+    let option = document.createElement("option");
+
+    option.value = brand;
+    option.textContent = brand;
+
+    companySelect.appendChild(option);
+
+});
 
 </body>
 </html>
