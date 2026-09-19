@@ -2,78 +2,13 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>My ElectroCare - Electronics Repair & Home Service</title>
 
-
 <style>
-    /* COMPLAINT FORM */
-
-#complaintForm{
-    padding:50px 6%;
-    background:#f4f8fc;
-}
-
-.complaint-box{
-    max-width:650px;
-    margin:auto;
-    background:white;
-    padding:30px;
-    border-radius:20px;
-    box-shadow:0 8px 30px #00000015;
-}
-
-.complaint-box h2{
-    margin-top:0;
-    font-size:28px;
-}
-
-#selectedProduct{
-    color:#087ff5;
-    font-weight:bold;
-    margin-bottom:25px;
-}
-
-.complaint-box input,
-.complaint-box textarea,
-.complaint-box select{
-    width:100%;
-    padding:13px;
-    margin:8px 0 15px;
-    border:1px solid #d1d5db;
-    border-radius:9px;
-    font-size:15px;
-}
-
-.complaint-box label{
-    display:block;
-    font-weight:bold;
-    margin-top:10px;
-}
-
-.complaint-box button{
-    width:100%;
-    padding:13px;
-    margin-top:10px;
-    border:0;
-    border-radius:9px;
-    background:#087ff5;
-    color:white;
-    font-weight:bold;
-    font-size:15px;
-}
-
-.submit-btn{
-    background:#16a34a !important;
-    margin-top:20px !important;
-}
-
-#locationStatus{
-    color:#64748b;
-    font-size:14px;
-}
 
 *{
     box-sizing:border-box;
@@ -207,6 +142,7 @@ header{
     padding:10px 22px;
     border-radius:8px;
     font-weight:bold;
+    cursor:pointer;
 }
 
 /* HOW IT WORKS */
@@ -241,6 +177,73 @@ header{
     justify-content:center;
     margin:auto;
     font-weight:bold;
+}
+
+/* COMPLAINT FORM */
+
+#complaintForm{
+    padding:50px 6%;
+    background:#f4f8fc;
+}
+
+.complaint-box{
+    max-width:650px;
+    margin:auto;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 8px 30px #00000015;
+}
+
+.complaint-box h2{
+    margin-top:0;
+    font-size:28px;
+}
+
+#selectedProduct{
+    color:#087ff5;
+    font-weight:bold;
+    margin-bottom:25px;
+}
+
+.complaint-box input,
+.complaint-box textarea,
+.complaint-box select{
+    width:100%;
+    padding:13px;
+    margin:8px 0 15px;
+    border:1px solid #d1d5db;
+    border-radius:9px;
+    font-size:15px;
+}
+
+.complaint-box label{
+    display:block;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.complaint-box button{
+    width:100%;
+    padding:13px;
+    margin-top:10px;
+    border:0;
+    border-radius:9px;
+    background:#087ff5;
+    color:white;
+    font-weight:bold;
+    font-size:15px;
+    cursor:pointer;
+}
+
+.submit-btn{
+    background:#16a34a !important;
+    margin-top:20px !important;
+}
+
+#locationStatus{
+    color:#64748b;
+    font-size:14px;
 }
 
 /* FOOTER */
@@ -309,6 +312,7 @@ footer p{
 }
 
 </style>
+
 </head>
 
 <body>
@@ -359,8 +363,9 @@ footer p{
             <div class="product-icon">📺</div>
             <h3>LED</h3>
             <p>LED repair & service</p>
-         <button onclick="selectProduct('LED')">Select</button>
+            <button onclick="selectProduct('LED')">Select</button>
         </div>
+
 
         <div class="product-card">
             <div class="product-icon">❄️</div>
@@ -369,6 +374,7 @@ footer p{
             <button onclick="selectProduct('AC')">Select</button>
         </div>
 
+
         <div class="product-card">
             <div class="product-icon">🧊</div>
             <h3>Refrigerator</h3>
@@ -376,12 +382,14 @@ footer p{
             <button onclick="selectProduct('Refrigerator')">Select</button>
         </div>
 
+
         <div class="product-card">
             <div class="product-icon">🌀</div>
             <h3>Washing Machine</h3>
             <p>Washing machine repair</p>
-          <button onclick="selectProduct('Washing Machine')">Select</button>
+            <button onclick="selectProduct('Washing Machine')">Select</button>
         </div>
+
 
         <div class="product-card">
             <div class="product-icon">💨</div>
@@ -389,6 +397,7 @@ footer p{
             <p>Cooler repair & service</p>
             <button onclick="selectProduct('Cooler')">Select</button>
         </div>
+
 
         <div class="product-card">
             <div class="product-icon">🔥</div>
@@ -439,6 +448,117 @@ footer p{
 </section>
 
 
+<!-- COMPLAINT FORM -->
+
+<section id="complaintForm" style="display:none;">
+
+    <div class="complaint-box">
+
+        <h2>🔧 Book Repair Service</h2>
+
+        <p id="selectedProduct">
+            Selected Product
+        </p>
+
+
+        <label>🏷️ Select Company / Brand</label>
+
+        <select id="company">
+
+            <option value="">
+                Select Company / Brand
+            </option>
+
+        </select>
+
+
+        <input
+            type="text"
+            id="customerName"
+            placeholder="Your Name"
+        >
+
+
+        <input
+            type="tel"
+            id="customerMobile"
+            placeholder="Mobile Number"
+        >
+
+
+        <textarea
+            id="problem"
+            placeholder="Describe your problem..."
+            rows="5"
+        ></textarea>
+
+
+        <label>
+            📸 Upload Product / Problem Photo
+        </label>
+
+        <input
+            type="file"
+            id="problemPhoto"
+            accept="image/*"
+        >
+
+
+        <textarea
+            id="customerAddress"
+            placeholder="Enter your complete home address..."
+            rows="4"
+        ></textarea>
+
+
+        <label>
+            ⏰ When do you need a mechanic?
+        </label>
+
+        <select id="requiredTime">
+
+            <option value="">
+                Select required time
+            </option>
+
+            <option>
+                As soon as possible
+            </option>
+
+            <option>
+                Today
+            </option>
+
+            <option>
+                Tomorrow
+            </option>
+
+            <option>
+                Within 2-3 days
+            </option>
+
+        </select>
+
+
+        <button onclick="getHomeLocation()">
+            📍 My Home Location
+        </button>
+
+
+        <p id="locationStatus">
+            Location not added
+        </p>
+
+
+        <button class="submit-btn">
+            🚀 Submit Complaint
+        </button>
+
+    </div>
+
+</section>
+
+
 <footer>
 
     <h2>⚡ My ElectroCare</h2>
@@ -452,113 +572,146 @@ footer p{
     </p>
 
 </footer>
-    <!-- COMPLAINT FORM -->
 
-<section id="complaintForm" style="display:none;">
-
-    <div class="complaint-box">
-
-        <h2>🔧 Book Repair Service</h2>
-        <p id="selectedProduct">Selected Product</p>
-        <label>🏷️ Select Company / Brand</label>
-
-<select id="company">
-    <option value="">Select Company / Brand</option>
-</select>
-
-        <input type="text"
-               id="customerName"
-               placeholder="Your Name">
-
-        <input type="tel"
-               id="customerMobile"
-               placeholder="Mobile Number">
-
-        <textarea id="problem"
-                  placeholder="Describe your problem..."
-                  rows="5"></textarea>
-
-        <label>📸 Upload Product / Problem Photo</label>
-
-        <input type="file"
-               id="problemPhoto"
-               accept="image/*">
-
-        <textarea id="customerAddress"
-                  placeholder="Enter your complete home address..."
-                  rows="4"></textarea>
-
-        <label>⏰ When do you need a mechanic?</label>
-
-        <select id="requiredTime">
-
-            <option value="">Select required time</option>
-            <option>As soon as possible</option>
-            <option>Today</option>
-            <option>Tomorrow</option>
-            <option>Within 2-3 days</option>
-
-        </select>
-
-        <button onclick="getHomeLocation()">
-            📍 My Home Location
-        </button>
-
-        <p id="locationStatus">
-            Location not added
-        </p>
-
-        <button class="submit-btn">
-            🚀 Submit Complaint
-        </button>
-
-    </div>
-
-</section>
-    <script>
 
 <script>
 
-const companySelect = document.getElementById("company");
+function selectProduct(product){
 
-companySelect.innerHTML = '<option value="">Select Company / Brand</option>';
+    document.getElementById("complaintForm").style.display = "block";
 
-let brands = [];
+    document.getElementById("selectedProduct").innerText =
+        "Selected Product: " + product;
 
-if(product === "LED"){
-    brands = ["Samsung","LG","Sony","Mi","TCL","Panasonic","OnePlus","Other"];
+
+    const companySelect =
+        document.getElementById("company");
+
+
+    companySelect.innerHTML =
+        '<option value="">Select Company / Brand</option>';
+
+
+    let brands = [];
+
+
+    if(product === "LED"){
+
+        brands = [
+            "Samsung",
+            "LG",
+            "Sony",
+            "Mi",
+            "TCL",
+            "Panasonic",
+            "OnePlus",
+            "Other"
+        ];
+
+    }
+
+
+    if(product === "AC"){
+
+        brands = [
+            "Voltas",
+            "LG",
+            "Samsung",
+            "Daikin",
+            "Carrier",
+            "Blue Star",
+            "Hitachi",
+            "Other"
+        ];
+
+    }
+
+
+    if(product === "Refrigerator"){
+
+        brands = [
+            "LG",
+            "Samsung",
+            "Whirlpool",
+            "Haier",
+            "Godrej",
+            "Panasonic",
+            "Other"
+        ];
+
+    }
+
+
+    if(product === "Washing Machine"){
+
+        brands = [
+            "LG",
+            "Samsung",
+            "Whirlpool",
+            "IFB",
+            "Bosch",
+            "Haier",
+            "Godrej",
+            "Other"
+        ];
+
+    }
+
+
+    if(product === "Cooler"){
+
+        brands = [
+            "Symphony",
+            "Bajaj",
+            "Crompton",
+            "Voltas",
+            "Kenstar",
+            "Orient",
+            "Other"
+        ];
+
+    }
+
+
+    if(product === "Microwave"){
+
+        brands = [
+            "LG",
+            "Samsung",
+            "IFB",
+            "Panasonic",
+            "Bajaj",
+            "Godrej",
+            "Other"
+        ];
+
+    }
+
+
+    brands.forEach(function(brand){
+
+        let option =
+            document.createElement("option");
+
+        option.value = brand;
+
+        option.textContent = brand;
+
+        companySelect.appendChild(option);
+
+    });
+
+
+    document.getElementById("complaintForm")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
 }
 
-if(product === "AC"){
-    brands = ["Voltas","LG","Samsung","Daikin","Carrier","Blue Star","Hitachi","Other"];
-}
+</script>
 
-if(product === "Refrigerator"){
-    brands = ["LG","Samsung","Whirlpool","Haier","Godrej","Panasonic","Other"];
-}
-
-if(product === "Washing Machine"){
-    brands = ["LG","Samsung","Whirlpool","IFB","Bosch","Haier","Godrej","Other"];
-}
-
-if(product === "Cooler"){
-    brands = ["Symphony","Bajaj","Crompton","Voltas","Kenstar","Orient","Other"];
-}
-
-if(product === "Microwave"){
-    brands = ["LG","Samsung","IFB","Panasonic","Bajaj","Godrej","Other"];
-}
-
-brands.forEach(function(brand){
-
-    let option = document.createElement("option");
-
-    option.value = brand;
-    option.textContent = brand;
-
-    companySelect.appendChild(option);
-
-});
 
 </body>
+
 </html>
