@@ -359,42 +359,42 @@ footer p{
             <div class="product-icon">📺</div>
             <h3>LED</h3>
             <p>LED repair & service</p>
-            <button>Select</button>
+         <button onclick="selectProduct('LED')">Select</button>
         </div>
 
         <div class="product-card">
             <div class="product-icon">❄️</div>
             <h3>AC</h3>
             <p>AC repair & service</p>
-            <button>Select</button>
+            <button onclick="selectProduct('AC')">Select</button>
         </div>
 
         <div class="product-card">
             <div class="product-icon">🧊</div>
             <h3>Refrigerator</h3>
             <p>Fridge repair & service</p>
-            <button>Select</button>
+            <button onclick="selectProduct('Refrigerator')">Select</button>
         </div>
 
         <div class="product-card">
             <div class="product-icon">🌀</div>
             <h3>Washing Machine</h3>
             <p>Washing machine repair</p>
-            <button>Select</button>
+          <button onclick="selectProduct('Washing Machine')">Select</button>
         </div>
 
         <div class="product-card">
             <div class="product-icon">💨</div>
             <h3>Cooler</h3>
             <p>Cooler repair & service</p>
-            <button>Select</button>
+            <button onclick="selectProduct('Cooler')">Select</button>
         </div>
 
         <div class="product-card">
             <div class="product-icon">🔥</div>
             <h3>Microwave</h3>
             <p>Microwave repair & service</p>
-            <button>Select</button>
+            <button onclick="selectProduct('Microwave')">Select</button>
         </div>
 
     </div>
@@ -510,6 +510,22 @@ footer p{
     </div>
 
 </section>
+    <script>
+
+function selectProduct(product){
+
+    document.getElementById("complaintForm").style.display = "block";
+
+    document.getElementById("selectedProduct").innerText =
+        "Selected Product: " + product;
+
+    document.getElementById("complaintForm").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+</script>
 
 </body>
 </html>
