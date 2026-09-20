@@ -592,26 +592,73 @@ async function viewComplaint(id){
         return;
     }
 
-    let photo = data.image_url
-        ? "\n\n📸 Problem Photo:\n" + data.image_url
-        : "\n\n📸 Problem Photo: Not uploaded";
+    document.getElementById("viewId").innerText =
+        data.id || "-";
 
-    alert(
-        "🔧 COMPLAINT DETAILS\n\n" +
+    document.getElementById("viewStatus").innerText =
+        data.status || "-";
 
-        "🆔 Complaint ID: " + data.id + "\n" +
-        "👤 Customer: " + (data.customer_name || "-") + "\n" +
-        "📱 Mobile: " + (data.mobile || "-") + "\n" +
-        "📺 Product: " + (data.product || "-") + "\n" +
-        "🏷️ Company: " + (data.company || "-") + "\n" +
-        "⚠️ Problem: " + (data.problem || "-") + "\n" +
-        "⏰ Required Time: " + (data.required_time || "-") + "\n" +
-        "📍 Address: " + (data.address || "-") + "\n" +
-        "📌 Status: " + (data.status || "-") +
-        photo
-    );
+    document.getElementById("viewCustomer").innerText =
+        data.customer_name || "-";
+
+    document.getElementById("viewMobile").innerText =
+        data.mobile || "-";
+
+    document.getElementById("viewProduct").innerText =
+        data.product || "-";
+
+    document.getElementById("viewCompany").innerText =
+        data.company || "-";
+
+    document.getElementById("viewTime").innerText =
+        data.required_time || "-";
+
+    document.getElementById("viewProblem").innerText =
+        data.problem || "-";
+
+    document.getElementById("viewAddress").innerText =
+        data.address || "-";
+
+
+    /* PHOTO */
+
+    const photoBox =
+        document.getElementById("viewPhoto");
+
+    if(data.image_url){
+
+        photoBox.innerHTML = `
+            <img
+                src="${data.image_url}"
+                alt="Product / Problem Photo"
+                onclick="window.open('${data.image_url}','_blank')"
+            >
+        `;
+
+    }else{
+
+        photoBox.innerHTML = `
+            <div class="no-photo">
+                📷 No photo uploaded
+            </div>
+        `;
+
+    }
+
+
+    /* OPEN MODAL */
+
+    document.getElementById("viewModal").style.display =
+        "flex";
 }
 
+
+function closeViewComplaint(){
+
+    document.getElementById("viewModal").style.display =
+        "none";
+
+}
 loadComplaints();
 
 </script>
