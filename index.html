@@ -597,34 +597,19 @@ footer p{
 
 <footer>
 
-    <h2>⚡ My ElectroCare</h2>
-
-    <p>
-        Electronics Repair & Home Service
-    </p>
-
-    <p>
-        © 2026 My ElectroCare. All Rights Reserved.
-    </p>
-
-</footer>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-    <script>
 
 const SUPABASE_URL =
 "https://gbtqdwrrgcxomwhthban.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3
+"sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
 
 const supabaseClient =
 supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-
-function selectProduct(product){
 
 function selectProduct(product){
 
@@ -633,124 +618,66 @@ function selectProduct(product){
     document.getElementById("selectedProduct").innerText =
         "Selected Product: " + product;
 
-
     const companySelect =
         document.getElementById("company");
-
 
     companySelect.innerHTML =
         '<option value="">Select Company / Brand</option>';
 
-
     let brands = [];
 
-
     if(product === "LED"){
-
         brands = [
-            "Samsung",
-            "LG",
-            "Sony",
-            "Mi",
-            "TCL",
-            "Panasonic",
-            "OnePlus",
-            "Other"
+            "Samsung","LG","Sony","Mi","TCL",
+            "Panasonic","OnePlus","Other"
         ];
-
     }
-
 
     if(product === "AC"){
-
         brands = [
-            "Voltas",
-            "LG",
-            "Samsung",
-            "Daikin",
-            "Carrier",
-            "Blue Star",
-            "Hitachi",
-            "Other"
+            "Voltas","LG","Samsung","Daikin",
+            "Carrier","Blue Star","Hitachi","Other"
         ];
-
     }
-
 
     if(product === "Refrigerator"){
-
         brands = [
-            "LG",
-            "Samsung",
-            "Whirlpool",
-            "Haier",
-            "Godrej",
-            "Panasonic",
-            "Other"
+            "LG","Samsung","Whirlpool","Haier",
+            "Godrej","Panasonic","Other"
         ];
-
     }
-
 
     if(product === "Washing Machine"){
-
         brands = [
-            "LG",
-            "Samsung",
-            "Whirlpool",
-            "IFB",
-            "Bosch",
-            "Haier",
-            "Godrej",
-            "Other"
+            "LG","Samsung","Whirlpool","IFB",
+            "Bosch","Haier","Godrej","Other"
         ];
-
     }
-
 
     if(product === "Cooler"){
-
         brands = [
-            "Symphony",
-            "Bajaj",
-            "Crompton",
-            "Voltas",
-            "Kenstar",
-            "Orient",
-            "Other"
+            "Symphony","Bajaj","Crompton","Voltas",
+            "Kenstar","Orient","Other"
         ];
-
     }
-
 
     if(product === "Microwave"){
-
         brands = [
-            "LG",
-            "Samsung",
-            "IFB",
-            "Panasonic",
-            "Bajaj",
-            "Godrej",
-            "Other"
+            "LG","Samsung","IFB","Panasonic",
+            "Bajaj","Godrej","Other"
         ];
-
     }
-
 
     brands.forEach(function(brand){
 
-        let option =
-            document.createElement("option");
+        let option = document.createElement("option");
 
         option.value = brand;
-
         option.textContent = brand;
 
         companySelect.appendChild(option);
 
     });
-
 
     document.getElementById("complaintForm")
         .scrollIntoView({
@@ -758,23 +685,33 @@ function selectProduct(product){
         });
 
 }
-    function getHomeLocation(){
 
-    const status = document.getElementById("locationStatus");
+
+function getHomeLocation(){
+
+    const status =
+        document.getElementById("locationStatus");
 
     if(!navigator.geolocation){
-        status.innerText = "❌ Location support nahi hai.";
+
+        status.innerText =
+            "❌ Location support nahi hai.";
+
         return;
     }
 
-    status.innerText = "📍 Location detect ho rahi hai...";
+    status.innerText =
+        "📍 Location detect ho rahi hai...";
 
     navigator.geolocation.getCurrentPosition(
 
         function(position){
 
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
+            const latitude =
+                position.coords.latitude;
+
+            const longitude =
+                position.coords.longitude;
 
             status.innerText =
                 "✅ Home Location Added";
@@ -795,7 +732,93 @@ function selectProduct(product){
 
 }
 
+
+async function submitComplaint(){
+
+    const product =
+        document.getElementById("selectedProduct")
+        .innerText
+        .replace("Selected Product: ","");
+
+    const company =
+        document.getElementById("company").value;
+
+    const name =
+        document.getElementById("customerName").value;
+
+    const mobile =
+        document.getElementById("customerMobile").value;
+
+    const problem =
+        document.getElementById("problem").value;
+
+    const address =
+        document.getElementById("customerAddress").value;
+
+    const requiredTime =
+        document.getElementById("requiredTime").value;
+
+
+    if(!name || !mobile || !company ||
+       !problem || !address || !requiredTime){
+
+        alert("⚠️ Please fill all details.");
+
+        return;
+    }
+
+
+    const { data, error } =
+        await supabaseClient
+        .from("Complaints")
+        .insert([{
+
+            customer_name: name,
+            mobile: mobile,
+            product: product,
+            company: company,
+            problem: problem,
+            address: address,
+            required_time: requiredTime,
+            latitude: window.homeLatitude || null,
+            longitude: window.homeLongitude || null,
+            status: "Pending"
+
+        }])
+        .select();
+
+
+    if(error){
+
+        alert(
+            "❌ Complaint submit nahi hui: "
+            + error.message
+        );
+
+        return;
+    }
+
+
+    alert(
+        "✅ Complaint successfully submitted!"
+    );
+
+
+    document.getElementById("customerName").value = "";
+    document.getElementById("customerMobile").value = "";
+    document.getElementById("problem").value = "";
+    document.getElementById("customerAddress").value = "";
+    document.getElementById("requiredTime").value = "";
+    document.getElementById("company").value = "";
+
+    document.getElementById("locationStatus").innerText =
+        "Location not added";
+
+}
+
 </script>
+
+
 
 
 </body>
