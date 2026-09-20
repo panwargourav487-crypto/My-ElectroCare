@@ -744,6 +744,42 @@ function selectProduct(product){
         });
 
 }
+    function getHomeLocation(){
+
+    const status = document.getElementById("locationStatus");
+
+    if(!navigator.geolocation){
+        status.innerText = "❌ Location support nahi hai.";
+        return;
+    }
+
+    status.innerText = "📍 Location detect ho rahi hai...";
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position){
+
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            status.innerText =
+                "✅ Home Location Added";
+
+            window.homeLatitude = latitude;
+            window.homeLongitude = longitude;
+
+        },
+
+        function(error){
+
+            status.innerText =
+                "❌ Location permission allow karo.";
+
+        }
+
+    );
+
+}
 
 </script>
 
