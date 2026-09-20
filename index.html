@@ -602,10 +602,11 @@ footer p{
 <script>
 
 const SUPABASE_URL =
-"https://gbtqdwrrgcxomwhthban.supabase.co";
+ "https://gbtqdwrrgcxomwhthban.supabase.co";
+
 
 const SUPABASE_KEY =
-"sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
+  "sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
 
 const supabaseClient =
 supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -768,25 +769,23 @@ async function submitComplaint(){
     }
 
 
-    const { data, error } =
-        await supabaseClient
-        .from("Complaints")
-        .insert([{
+  const { error } =
+    await supabaseClient
+    .from("Complaints")
+    .insert([{
 
-            customer_name: name,
-            mobile: mobile,
-            product: product,
-            company: company,
-            problem: problem,
-            address: address,
-            required_time: requiredTime,
-            latitude: window.homeLatitude || null,
-            longitude: window.homeLongitude || null,
-            status: "Pending"
+        customer_name: name,
+        mobile: mobile,
+        product: product,
+        company: company,
+        problem: problem,
+        address: address,
+        required_time: requiredTime,
+        latitude: window.homeLatitude || null,
+        longitude: window.homeLongitude || null,
+        status: "Pending"
 
-        }])
-        .select();
-
+    }]);
 
     if(error){
 
