@@ -448,13 +448,39 @@ async function loadComplaints(){
 
 }
 
-
 /* VIEW */
 
-function viewComplaint(id){
+async function viewComplaint(id){
 
-    alert("Complaint ID: " + id);
+    const { data, error } = await supabaseClient
+        .from("Complaints")
+        .select("*")
+        .eq("id", id)
+        .single();
 
+    if(error){
+        alert("❌ Complaint details nahi mili: " + error.message);
+        return;
+    }
+
+    let photo = data.image_url
+        ? "\n\n📸 Problem Photo:\n" + data.image_url
+        : "\n\n📸 Problem Photo: Not uploaded";
+
+    alert(
+        "🔧 COMPLAINT DETAILS\n\n" +
+
+        "🆔 Complaint ID: " + data.id + "\n" +
+        "👤 Customer: " + (data.customer_name || "-") + "\n" +
+        "📱 Mobile: " + (data.mobile || "-") + "\n" +
+        "📺 Product: " + (data.product || "-") + "\n" +
+        "🏷️ Company: " + (data.company || "-") + "\n" +
+        "⚠️ Problem: " + (data.problem || "-") + "\n" +
+        "⏰ Required Time: " + (data.required_time || "-") + "\n" +
+        "📍 Address: " + (data.address || "-") + "\n" +
+        "📌 Status: " + (data.status || "-") +
+        photo
+    );
 }
 
 loadComplaints();
