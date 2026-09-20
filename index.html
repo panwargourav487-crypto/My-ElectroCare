@@ -586,9 +586,9 @@ footer p{
         </p>
 
 
-        <button class="submit-btn">
-            🚀 Submit Complaint
-        </button>
+        <button class="submit-btn" onclick="submitComplaint()">
+    🚀 Submit Complaint
+</button>
 
     </div>
 
@@ -608,9 +608,23 @@ footer p{
     </p>
 
 </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
 
 <script>
+    <script>
+
+const SUPABASE_URL =
+"https://gbtqdwrrgcxomwhthban.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3
+
+const supabaseClient =
+supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+
+function selectProduct(product){
 
 function selectProduct(product){
 
