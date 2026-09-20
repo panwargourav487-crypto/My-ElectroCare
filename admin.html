@@ -1,1 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>My ElectroCare - Admin Panel</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+/* HEADER */
+
+header{
+    background:#071b35;
+    color:white;
+    padding:18px 5%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#38bdf8;
+}
+
+.logout{
+    background:#ef4444;
+    color:white;
+    border:0;
+    padding:10px 18px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+/* LOGIN */
+
+.login-box{
+    max-width:400px;
+    margin:80px auto;
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 8px 30px #00000015;
+}
+
+.login-box h2{
+    text-align:center;
+}
+
+.login-box input{
+    width:100%;
+    padding:13px;
+    margin:8px 0;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.login-btn{
+    width:100%;
+    padding:13px;
+    margin-top:10px;
+    background:#087ff5;
+    color:white;
+    border:0;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+/* DASHBOARD */
+
+.container{
+    padding:30px 5%;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.stat{
+    background:white;
+    padding:22px;
+    border-radius:15px;
+    box-shadow:0 4px 18px #00000010;
+}
+
+.stat h3{
+    margin:0 0 10px;
+    color:#64748b;
+    font-size:15px;
+}
+
+.stat strong{
+    font-size:30px;
+}
+
+/* COMPLAINTS */
+
+.complaints{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 4px 18px #00000010;
+}
+
+.complaints h2{
+    margin-top:0;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    padding:13px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+}
+
+th{
+    background:#f8fafc;
+}
+
+.status{
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.view-btn{
+    background:#087ff5;
+    color:white;
+    border:0;
+    padding:7px 12px;
+    border-radius:6px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .complaints{
+        overflow-x:auto;
+    }
+
+    table{
+        min-width:800px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        ⚡ My <span>ElectroCare</span>
+    </div>
+
+    <button class="logout"
+    onclick="adminLogout()">
+        🚪 Logout
+    </button>
+
+</header>
+
+
+<!-- LOGIN -->
+
+<div id="loginBox"
+class="login-box">
+
+    <h2>🔐 Admin Login</h2>
+
+    <input
+    type="email"
+    id="email"
+    placeholder="Admin Email">
+
+    <input
+    type="password"
+    id="password"
+    placeholder="Password">
+
+    <button
+    class="login-btn"
+    onclick="adminLogin()">
+
+        Login
+
+    </button>
+
+</div>
+
+
+<!-- ADMIN DASHBOARD -->
+
+<div id="dashboard"
+class="container"
+style="display:none;">
+
+    <div class="stats">
+
+        <div class="stat">
+            <h3>Total Complaints</h3>
+            <strong id="totalComplaints">0</strong>
+        </div>
+
+        <div class="stat">
+            <h3>Pending</h3>
+            <strong id="pendingComplaints">0</strong>
+        </div>
+
+        <div class="stat">
+            <h3>Accepted</h3>
+            <strong id="acceptedComplaints">0</strong>
+        </div>
+
+        <div class="stat">
+            <h3>Completed</h3>
+            <strong id="completedComplaints">0</strong>
+        </div>
+
+    </div>
+
+
+    <div class="complaints">
+
+        <h2>📋 Customer Complaints</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Mobile</th>
+                    <th>Product</th>
+                    <th>Company</th>
+                    <th>Problem</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="complaintList">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL = 
+  "https://gbtqdwrrgcxomwhthban.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
+
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+/* LOGIN */
+
+async function adminLogin(){
+
+    const email =
+        document.getElementById("email").value;
+
+    const password =
+        document.getElementById("password").value;
+
+    const {error} =
+        await supabaseClient.auth
+        .signInWithPassword({
+
+            email:email,
+            password:password
+
+        });
+
+    if(error){
+
+        alert("❌ Login failed: " + error.message);
+
+        return;
+
+    }
+
+    document.getElementById("loginBox")
+        .style.display="none";
+
+    document.getElementById("dashboard")
+        .style.display="block";
+
+    loadComplaints();
+
+}
+
+
+/* LOGOUT */
+
+async function adminLogout(){
+
+    await supabaseClient.auth.signOut();
+
+    document.getElementById("dashboard")
+        .style.display="none";
+
+    document.getElementById("loginBox")
+        .style.display="block";
+
+}
+
+
+/* LOAD COMPLAINTS */
+
+async function loadComplaints(){
+
+    const {data,error} =
+        await supabaseClient
+        .from("Complaints")
+        .select("*")
+        .order("created_at",{ascending:false});
+
+    if(error){
+
+        alert("❌ Complaints load nahi hui: "
+        + error.message);
+
+        return;
+
+    }
+
+    document.getElementById("totalComplaints")
+        .innerText=data.length;
+
+    document.getElementById("pendingComplaints")
+        .innerText=
+        data.filter(x=>x.status==="Pending").length;
+
+    document.getElementById("acceptedComplaints")
+        .innerText=
+        data.filter(x=>x.status==="Accepted").length;
+
+    document.getElementById("completedComplaints")
+        .innerText=
+        data.filter(x=>x.status==="Completed").length;
+
+
+    const list =
+        document.getElementById("complaintList");
+
+    list.innerHTML="";
+
+
+    data.forEach(function(c){
+
+        list.innerHTML += `
+
+        <tr>
+
+            <td>${c.id || "-"}</td>
+
+            <td>${c.customer_name || "-"}</td>
+
+            <td>${c.mobile || "-"}</td>
+
+            <td>${c.product || "-"}</td>
+
+            <td>${c.company || "-"}</td>
+
+            <td>${c.problem || "-"}</td>
+
+            <td>
+                <span class="status">
+                    ${c.status || "Pending"}
+                </span>
+            </td>
+
+            <td>
+
+                <button
+                class="view-btn"
+                onclick="viewComplaint('${c.id}')">
+
+                    View
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+/* VIEW */
+
+function viewComplaint(id){
+
+    alert("Complaint ID: " + id);
+
+}
+
+</script>
+
+</body>
+
+</html>
