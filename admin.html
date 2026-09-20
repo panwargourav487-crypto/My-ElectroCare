@@ -11,6 +11,8 @@ content="width=device-width, initial-scale=1.0">
 <title>My ElectroCare - Admin Panel</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    
 
 <style>
 
@@ -23,6 +25,133 @@ body{
     font-family:Arial,sans-serif;
     background:#f4f7fb;
     color:#172033;
+}
+    /* COMPLAINT VIEW MODAL */
+
+.view-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.65);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.view-modal-box{
+    background:#fff;
+    width:100%;
+    max-width:650px;
+    max-height:90vh;
+    overflow-y:auto;
+    border-radius:20px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+}
+
+.view-modal-header{
+    background:#06111f;
+    color:white;
+    padding:18px 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.view-modal-header h2{
+    margin:0;
+    font-size:21px;
+}
+
+.close-view{
+    border:0;
+    background:#ef4444;
+    color:white;
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.view-modal-body{
+    padding:22px;
+}
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.detail-item{
+    background:#f5f7fa;
+    padding:13px;
+    border-radius:10px;
+}
+
+.detail-item strong{
+    display:block;
+    color:#64748b;
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+.detail-item span{
+    color:#111827;
+    font-size:15px;
+    font-weight:600;
+}
+
+.detail-full{
+    grid-column:1 / -1;
+}
+
+.problem-photo{
+    margin-top:20px;
+}
+
+.problem-photo h3{
+    font-size:17px;
+    margin-bottom:10px;
+}
+
+.problem-photo img{
+    width:100%;
+    max-height:350px;
+    object-fit:contain;
+    background:#f1f5f9;
+    border-radius:12px;
+    border:1px solid #e2e8f0;
+    cursor:pointer;
+}
+
+.no-photo{
+    padding:20px;
+    background:#f8fafc;
+    border-radius:10px;
+    color:#64748b;
+    text-align:center;
+}
+
+@media(max-width:600px){
+
+    .detail-grid{
+        grid-template-columns:1fr;
+    }
+
+    .detail-full{
+        grid-column:auto;
+    }
+
+    .view-modal{
+        padding:10px;
+    }
+
+    .view-modal-box{
+        max-height:94vh;
+    }
+
 }
 
 /* HEADER */
