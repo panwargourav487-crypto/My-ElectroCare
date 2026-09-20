@@ -759,33 +759,79 @@ async function submitComplaint(){
     const requiredTime =
         document.getElementById("requiredTime").value;
 
+    const photo =
+        document.getElementById("problemPhoto").files[0];
+
 
     if(!name || !mobile || !company ||
        !problem || !address || !requiredTime){
 
         alert("⚠️ Please fill all details.");
-
         return;
     }
 
 
-  const { error } =
-    await supabaseClient
-    .from("Complaints")
-    .insert([{
+    let imageUrl = null;
 
-        customer_name: name,
-        mobile: mobile,
-        product: product,
-        company: company,
-        problem: problem,
-        address: address,
-        required_time: requiredTime,
-        latitude: window.homeLatitude || null,
-        longitude: window.homeLongitude || null,
-        status: "Pending"
 
-    }]);
+    /* PHOTO UPLOAD */
+
+    if(photo){
+
+        const fileName =
+            Date.now() + "_" +
+            photo.name.replace(/\s/g,"_");
+
+        const { error: uploadError } =
+            await supabaseClient
+            .storage
+            .from("complaint-images")
+            .upload(fileName, photo);
+
+        if(uploadError){
+
+            alert(
+                "❌ Photo upload nahi hui: "
+                + uploadError.message
+            );
+
+            return;
+        }
+
+
+        const { data: publicData } =
+            supabaseClient
+            .storage
+            .from("complaint-images")
+            .getPublicUrl(fileName);
+
+        imageUrl =
+            publicData.publicUrl;
+    }
+
+
+    /* COMPLAINT SAVE */
+
+    const { data, error } =
+        await supabaseClient
+        .from("Complaints")
+        .insert([{
+
+            customer_name: name,
+            mobile: mobile,
+            product: product,
+            company: company,
+            problem: problem,
+            address: address,
+            required_time: requiredTime,
+            latitude: window.homeLatitude || null,
+            longitude: window.homeLongitude || null,
+            image_url: imageUrl,
+            status: "Pending"
+
+        }])
+        .select();
+
 
     if(error){
 
@@ -798,9 +844,7 @@ async function submitComplaint(){
     }
 
 
-    alert(
-        "✅ Complaint successfully submitted!"
-    );
+    alert("✅ Complaint successfully submitted!");
 
 
     document.getElementById("customerName").value = "";
@@ -809,6 +853,7 @@ async function submitComplaint(){
     document.getElementById("customerAddress").value = "";
     document.getElementById("requiredTime").value = "";
     document.getElementById("company").value = "";
+    document.getElementById("problemPhoto").value = "";
 
     document.getElementById("locationStatus").innerText =
         "Location not added";
