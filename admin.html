@@ -752,28 +752,47 @@ async function viewComplaint(id){
 }
     async function updateComplaintStatus(){
 
-    const id = document.getElementById("viewId").innerText;
-    const status = document.getElementById("viewStatus").value;
+    const id =
+        document.getElementById("viewId").innerText;
 
-  const { data, error } = await supabaseClient
-    .from("Complaints")
-    .update({
-        status: status
-    })
-    .eq("id", id)
-    .select();
+    const status =
+        document.getElementById("viewStatus").value;
 
-console.log("Updated data:", data);
+    const { data, error } = await supabaseClient
+        .from("Complaints")
+        .update({
+            status: status
+        })
+        .eq("id", id)
+        .select("id,status");
 
     if(error){
-        alert("❌ Status update nahi hua: " + error.message);
+
+        alert("❌ Update Error: " + error.message);
         return;
+
     }
 
-    alert("✅ Status updated!");
-        
-            closeViewComplaint();
+    console.log("UPDATED DATA:", data);
+
+    if(!data || data.length === 0){
+
+        alert("⚠️ 0 rows updated. Complaint ID match nahi hui.");
+
+        return;
+
+    }
+
+    alert(
+        "✅ Status updated!\n\n" +
+        "ID: " + data[0].id +
+        "\nStatus: " + data[0].status
+    );
+
+    closeViewComplaint();
+
     loadComplaints();
+
 }
 
   
