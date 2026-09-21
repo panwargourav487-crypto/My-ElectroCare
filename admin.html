@@ -525,10 +525,12 @@ class="container">
 
 const SUPABASE_URL = 
     "https://gbtqdwrrgcxomwhthban.supabase.co";
+
   
 
 const SUPABASE_KEY =
     "sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
+ 
 const supabaseClient =
 supabase.createClient(
     SUPABASE_URL,
@@ -753,12 +755,15 @@ async function viewComplaint(id){
     const id = document.getElementById("viewId").innerText;
     const status = document.getElementById("viewStatus").value;
 
-    const { error } = await supabaseClient
-        .from("Complaints")
-        .update({
-            status: status
-        })
-        .eq("id", id);
+  const { data, error } = await supabaseClient
+    .from("Complaints")
+    .update({
+        status: status
+    })
+    .eq("id", id)
+    .select();
+
+console.log("Updated data:", data);
 
     if(error){
         alert("❌ Status update nahi hua: " + error.message);
