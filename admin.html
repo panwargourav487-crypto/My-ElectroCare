@@ -748,6 +748,28 @@ async function viewComplaint(id){
     document.getElementById("viewModal").style.display =
         "flex";
 }
+    async function updateComplaintStatus(){
+
+    const id = document.getElementById("viewId").innerText;
+    const status = document.getElementById("viewStatus").value;
+
+    const { error } = await supabaseClient
+        .from("Complaints")
+        .update({
+            status: status
+        })
+        .eq("id", id);
+
+    if(error){
+        alert("❌ Status update nahi hua: " + error.message);
+        return;
+    }
+
+    alert("✅ Status updated!");
+
+    closeViewComplaint();
+    loadComplaints();
+}
 
 
 function closeViewComplaint(){
