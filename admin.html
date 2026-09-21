@@ -752,8 +752,9 @@ async function viewComplaint(id){
 }
     async function updateComplaintStatus(){
 
-    const id =
-        document.getElementById("viewId").innerText;
+   const id = Number(
+    document.getElementById("viewId").innerText.trim()
+);
 
     const status =
         document.getElementById("viewStatus").value;
