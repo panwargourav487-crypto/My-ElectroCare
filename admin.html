@@ -443,7 +443,12 @@ class="container">
 
                 <div class="detail-item">
                     <strong>Status</strong>
-                    <span id="viewStatus">-</span>
+                  <select id="viewStatus">
+    <option value="Pending">🟡 Pending</option>
+    <option value="Accepted">🔵 Accepted</option>
+    <option value="Rejected">🔴 Rejected</option>
+    <option value="Completed">🟢 Completed</option>
+</select>
                 </div>
 
                 <div class="detail-item">
@@ -676,8 +681,8 @@ async function viewComplaint(id){
     document.getElementById("viewId").innerText =
         data.id || "-";
 
-    document.getElementById("viewStatus").innerText =
-        data.status || "-";
+   document.getElementById("viewStatus").value =
+    data.status || "Pending";
 
     document.getElementById("viewCustomer").innerText =
         data.customer_name || "-";
