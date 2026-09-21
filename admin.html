@@ -419,7 +419,88 @@ class="container">
 
         </table>
 
+    <!-- COMPLAINT VIEW MODAL -->
+
+<div id="viewModal" class="view-modal">
+
+    <div class="view-modal-box">
+
+        <div class="view-modal-header">
+            <h2>📋 Complaint Details</h2>
+
+            <button class="close-view"
+                    onclick="closeViewComplaint()">×</button>
+        </div>
+
+        <div class="view-modal-body">
+
+            <div class="detail-grid">
+
+                <div class="detail-item">
+                    <strong>Complaint ID</strong>
+                    <span id="viewId">-</span>
+                </div>
+
+                <div class="detail-item">
+                    <strong>Status</strong>
+                    <span id="viewStatus">-</span>
+                </div>
+
+                <div class="detail-item">
+                    <strong>Customer</strong>
+                    <span id="viewCustomer">-</span>
+                </div>
+
+                <div class="detail-item">
+                    <strong>Mobile</strong>
+                    <span id="viewMobile">-</span>
+                </div>
+
+                <div class="detail-item">
+                    <strong>Product</strong>
+                    <span id="viewProduct">-</span>
+                </div>
+
+                <div class="detail-item">
+                    <strong>Company</strong>
+                    <span id="viewCompany">-</span>
+                </div>
+
+                <div class="detail-item">
+                    <strong>Required Time</strong>
+                    <span id="viewTime">-</span>
+                </div>
+
+                <div class="detail-item detail-full">
+                    <strong>Problem</strong>
+                    <span id="viewProblem">-</span>
+                </div>
+
+                <div class="detail-item detail-full">
+                    <strong>Address</strong>
+                    <span id="viewAddress">-</span>
+                </div>
+
+            </div>
+
+            <div class="problem-photo">
+
+                <h3>📸 Customer Photo</h3>
+
+                <div id="viewPhoto">
+                    <div class="no-photo">
+                        📷 No photo uploaded
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
+</div>
+    
 
 </div>
 
@@ -427,11 +508,11 @@ class="container">
 <script>
 
 const SUPABASE_URL = 
-  "https://gbtqdwrrgcxomwhthban.supabase.co";
+    "https://gbtqdwrrgcxomwhthban.supabase.co";
+  
 
 const SUPABASE_KEY =
-  "sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
-
+    "sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
 const supabaseClient =
 supabase.createClient(
     SUPABASE_URL,
