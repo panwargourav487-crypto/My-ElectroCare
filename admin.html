@@ -383,6 +383,11 @@ class="container">
         </div>
 
         <div class="stat">
+            <h3>Rejected</h3>
+            <strong id="rejectedComplaints">0</strong>
+        </div>
+
+        <div class="stat">
             <h3>Completed</h3>
             <strong id="completedComplaints">0</strong>
         </div>
@@ -525,11 +530,13 @@ class="container">
 
 const SUPABASE_URL = 
     "https://gbtqdwrrgcxomwhthban.supabase.co";
+ 
 
   
 
 const SUPABASE_KEY =
     "sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
+ 
  
 const supabaseClient =
 supabase.createClient(
@@ -571,7 +578,7 @@ async function adminLogin(){
     document.getElementById("dashboard")
         .style.display="block";
 
-    loadComplaints();
+    await loadComplaints();
 
 }
 
@@ -603,12 +610,15 @@ async function loadComplaints(){
 
     if(error){
 
-        alert("❌ Complaints load nahi hui: "
-        + error.message);
+        console.error("Complaints load error:", error);
+
+        alert("❌ Complaints load nahi hui:\n\n" + error.message);
 
         return;
 
     }
+
+    console.log("Complaints loaded:", data);
 
     document.getElementById("totalComplaints")
         .innerText=data.length;
@@ -620,6 +630,10 @@ async function loadComplaints(){
     document.getElementById("acceptedComplaints")
         .innerText=
         data.filter(x=>x.status==="Accepted").length;
+
+    document.getElementById("rejectedComplaints")
+        .innerText=
+        data.filter(x=>x.status==="Rejected").length;
 
     document.getElementById("completedComplaints")
         .innerText=
@@ -780,7 +794,9 @@ async function viewComplaint(id){
 
     if(error){
 
-        alert("❌ Status update error:\n" + error.message);
+        console.error("Status update error:", error);
+
+        alert("❌ Status update error:\n\n" + error.message);
 
         return;
     }
@@ -789,7 +805,7 @@ async function viewComplaint(id){
 
         alert(
             "❌ 0 rows updated.\n\n" +
-            "Admin session ya RLS permission issue hai."
+            "Complaint ID match nahi hui ya Admin permission issue hai."
         );
 
         return;
@@ -803,32 +819,8 @@ async function viewComplaint(id){
 
     closeViewComplaint();
 
-    loadComplaints();
+    await loadComplaints();
 }
-
-    console.log("UPDATED DATA:", data);
-
-    if(!data || data.length === 0){
-
-        alert("⚠️ 0 rows updated. Complaint ID match nahi hui.");
-
-        return;
-
-    }
-
-    alert(
-        "✅ Status updated!\n\n" +
-        "ID: " + data[0].id +
-        "\nStatus: " + data[0].status
-    );
-
-    closeViewComplaint();
-
-    loadComplaints();
-
-}
-
-  
 
 
 function closeViewComplaint(){
