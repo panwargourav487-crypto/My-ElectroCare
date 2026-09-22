@@ -1,1018 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="description" content="My ElectroCare - Electronics Repair & Home Service">
+<meta name="theme-color" content="#087ff5">
 <title>My ElectroCare - Electronics Repair & Home Service</title>
 
 <style>
-  .hero{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:40px;
-    padding:70px 6%;
-    background:linear-gradient(110deg,#f4faff,#ffffff);
-    min-height:560px;
-    overflow:hidden;
-}
-
-.hero-content{
-    width:50%;
-}
-
-.hero-badge{
-    display:inline-block;
-    background:#e3f3ff;
-    color:#087ff5;
-    padding:12px 20px;
-    border-radius:30px;
-    font-weight:bold;
-    margin-bottom:25px;
-}
-
-.hero h1{
-    font-size:54px;
-    line-height:1.08;
-    margin:0 0 20px;
-    color:#172033;
-}
-
-.hero h1 span{
-    color:#087ff5;
-}
-
-.hero p{
-    font-size:20px;
-    line-height:1.6;
-    color:#526174;
-    max-width:600px;
-}
-
-.hero-image{
-    width:48%;
-}
-
-.hero-image img{
-    width:100%;
-    display:block;
-    border-radius:24px;
-}
-
-*{
-    box-sizing:border-box;
-}
-
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f4f8fc;
-    color:#172033;
-}
-
-/* HEADER */
-
-header{
-    background:white;
-    padding:18px 6%;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    box-shadow:0 2px 12px #00000015;
-}
-
-.logo{
-    font-size:26px;
-    font-weight:bold;
-    color:#087ff5;
-}
-
-.logo span{
-    color:#172033;
-}
-
-.header-btn{
-    background:#087ff5;
-    color:white;
-    border:0;
-    padding:12px 20px;
-    border-radius:9px;
-    font-weight:bold;
-}
-
-/* HERO */
-
-.hero{
-    background:linear-gradient(135deg,#071b35,#087ff5);
-    color:white;
-    padding:70px 6%;
-    text-align:center;
-}
-
-.hero h1{
-    font-size:46px;
-    margin:0 0 15px;
-}
-
-.hero h1 span{
-    color:#38bdf8;
-}
-
-.hero p{
-    font-size:18px;
-    max-width:700px;
-    margin:0 auto 30px;
-    line-height:1.6;
-}
-
-.hero-btn{
-    background:white;
-    color:#087ff5;
-    border:0;
-    padding:14px 28px;
-    border-radius:10px;
-    font-size:16px;
-    font-weight:bold;
-}
-
-/* SERVICES */
-
-.services{
-    padding:50px 6%;
-    text-align:center;
-}
-
-.services h2{
-    font-size:32px;
-    margin-bottom:10px;
-}
-
-.services > p{
-    color:#64748b;
-}
-
-.products{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:22px;
-    margin-top:35px;
-}
-
-.product-card{
-    background:white;
-    padding:25px;
-    border-radius:18px;
-    box-shadow:0 5px 20px #00000012;
-    transition:.2s;
-}
-
-.product-card:hover{
-    transform:translateY(-5px);
-}
-.product-icon{
-    width:100%;
-    height:180px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    border-radius:12px;
-}
-
-.product-icon img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-}
-
-}
-
-.product-card h3{
-    margin:15px 0 8px;
-}
-
-.product-card p{
-    color:#64748b;
-    font-size:14px;
-}
-
-.product-card button{
-    margin-top:10px;
-    background:#087ff5;
-    color:white;
-    border:0;
-    padding:10px 22px;
-    border-radius:8px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-/* HOW IT WORKS */
-
-.how{
-    background:#eaf5ff;
-    padding:50px 6%;
-    text-align:center;
-}
-
-.steps{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:20px;
-    margin-top:30px;
-}
-
-.step{
-    background:white;
-    padding:25px 15px;
-    border-radius:15px;
-}
-
-.step-number{
-    width:45px;
-    height:45px;
-    background:#087ff5;
-    color:white;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:auto;
-    font-weight:bold;
-}
-
-/* COMPLAINT FORM */
-
-#complaintForm{
-    padding:50px 6%;
-    background:#f4f8fc;
-}
-
-.complaint-box{
-    max-width:650px;
-    margin:auto;
-    background:white;
-    padding:30px;
-    border-radius:20px;
-    box-shadow:0 8px 30px #00000015;
-}
-
-.complaint-box h2{
-    margin-top:0;
-    font-size:28px;
-}
-
-#selectedProduct{
-    color:#087ff5;
-    font-weight:bold;
-    margin-bottom:25px;
-}
-
-.complaint-box input,
-.complaint-box textarea,
-.complaint-box select{
-    width:100%;
-    padding:13px;
-    margin:8px 0 15px;
-    border:1px solid #d1d5db;
-    border-radius:9px;
-    font-size:15px;
-}
-
-.complaint-box label{
-    display:block;
-    font-weight:bold;
-    margin-top:10px;
-}
-
-.complaint-box button{
-    width:100%;
-    padding:13px;
-    margin-top:10px;
-    border:0;
-    border-radius:9px;
-    background:#087ff5;
-    color:white;
-    font-weight:bold;
-    font-size:15px;
-    cursor:pointer;
-}
-
-.submit-btn{
-    background:#16a34a !important;
-    margin-top:20px !important;
-}
-
-#locationStatus{
-    color:#64748b;
-    font-size:14px;
-}
-
-/* FOOTER */
-
-footer{
-    background:#071b35;
-    color:white;
-    text-align:center;
-    padding:30px 15px;
-}
-
-footer h2{
-    margin:0 0 8px;
-}
-
-footer p{
-    color:#cbd5e1;
-}
-
-/* MOBILE */
-
-@media(max-width:700px){
-
-    header{
-        padding:15px 20px;
-    }
-
-    .logo{
-        font-size:21px;
-    }
-
-    .header-btn{
-        padding:9px 12px;
-        font-size:12px;
-    }
-
-    .hero{
-        padding:50px 20px;
-    }
-
-    .hero h1{
-        font-size:32px;
-    }
-
-    .hero p{
-        font-size:15px;
-    }
-
-    .products{
-        grid-template-columns:repeat(2,1fr);
-        gap:12px;
-    }
-
-    .product-card{
-        padding:18px 10px;
-    }
-
-.product-icon{
-    width:100%;
-    height:130px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-}
-
-.product-icon img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-}
-
-    .steps{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;background:#f5f8fc;color:#172033;line-height:1.5}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+header{position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:14px 6%;background:#fff;box-shadow:0 2px 16px #00000012}
+.logo{font-size:25px;font-weight:800;color:#087ff5}.logo span{color:#172033}
+.header-btn{border:0;border-radius:11px;padding:11px 17px;background:#087ff5;color:#fff;font-weight:700}
+.hero{display:flex;align-items:center;justify-content:space-between;gap:40px;padding:70px 6%;min-height:560px;background:linear-gradient(135deg,#061a33,#087ff5);color:#fff}
+.hero-content{width:53%}.hero-badge{display:inline-block;padding:9px 16px;margin-bottom:22px;border-radius:30px;background:#ffffff18;color:#dff4ff;font-weight:700;font-size:14px}
+.hero h1{font-size:54px;line-height:1.08;margin-bottom:18px}.hero h1 span{color:#67d8ff}
+.hero p{max-width:650px;margin-bottom:28px;color:#e2efff;font-size:19px}
+.hero-btn{border:0;border-radius:11px;padding:14px 25px;background:#fff;color:#087ff5;font-weight:800}
+.hero-image{width:42%}.hero-image img{width:100%;max-height:430px;object-fit:contain;display:block;filter:drop-shadow(0 25px 35px #00152f55)}
+section{width:100%}
+.section-head{text-align:center;max-width:750px;margin:auto}.section-head h2{font-size:34px;margin-bottom:8px}.section-head p{color:#64748b}
+.services{padding:65px 6%}
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:35px}
+.product-card{padding:20px;background:#fff;border:1px solid #e7edf5;border-radius:20px;box-shadow:0 8px 25px #0000000d;text-align:center;transition:.2s}
+.product-card:hover{transform:translateY(-4px);box-shadow:0 15px 35px #00000015}
+.product-icon{height:180px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:15px;background:#f7fbff}
+.product-icon img{width:100%;height:100%;object-fit:contain}
+.product-card h3{margin:14px 0 5px}.product-card p{color:#64748b;font-size:14px}
+.product-card button,.form-btn{width:100%;margin-top:13px;padding:12px;border:0;border-radius:10px;background:#087ff5;color:#fff;font-weight:800}
+.how{padding:65px 6%;background:#eaf5ff}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:35px auto 0}
+.step{padding:24px 15px;background:#fff;border-radius:18px;text-align:center}.step-number{width:46px;height:46px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#087ff5;color:#fff;font-weight:800}.step p{color:#64748b;font-size:14px}
+#complaintForm,#statusSection{padding:65px 6%}
+#complaintForm{background:#f5f8fc}
+.complaint-box{width:100%;max-width:700px;margin:auto;padding:30px;background:#fff;border:1px solid #e5edf6;border-radius:22px;box-shadow:0 12px 40px #00000012}
+.complaint-box h2{font-size:28px;margin-bottom:7px}.form-subtitle{color:#64748b;margin-bottom:20px}
+#selectedProduct{display:block;padding:12px 14px;margin-bottom:18px;border-radius:10px;background:#eef7ff;color:#087ff5;font-weight:800}
+.complaint-box label{display:block;margin:13px 0 7px;font-size:14px;font-weight:700}
+.complaint-box input,.complaint-box textarea,.complaint-box select{width:100%;padding:13px 14px;border:1px solid #d5dde8;border-radius:10px;outline:none;background:#fff}
+.complaint-box input:focus,.complaint-box textarea:focus,.complaint-box select:focus{border-color:#087ff5;box-shadow:0 0 0 3px #087ff518}
+.complaint-box textarea{resize:vertical}.submit-btn{background:#16a34a!important}.submit-btn:hover{background:#12843c!important}
+#locationStatus{margin-top:6px;color:#64748b;font-size:13px}
+.status-section{background:linear-gradient(#fff,#f5f8fc)}
+.status-result{display:none;margin-top:20px}.status-card{padding:20px;border-radius:16px;background:#f8fafc;border:1px solid #e2e8f0}
+.status-card h3{margin-bottom:3px}.status-id{color:#64748b;font-size:13px;margin-bottom:15px}
+.status-badge{display:inline-block;padding:8px 14px;border-radius:30px;font-weight:800;font-size:14px}
+.pending{background:#fff7ed;color:#c2410c}.accepted{background:#eff6ff;color:#1d4ed8}.completed{background:#ecfdf5;color:#047857}.rejected{background:#fef2f2;color:#b91c1c}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:22px}.timeline-item{text-align:center}
+.dot{width:30px;height:30px;margin:0 auto 6px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e2e8f0;color:#64748b;font-weight:800;font-size:12px}
+.timeline-item.active .dot{background:#087ff5;color:#fff}.timeline-item span{font-size:10px;color:#64748b;font-weight:700}.timeline-item.active span{color:#087ff5}
+.status-error{padding:14px;border-radius:12px;background:#fef2f2;color:#b91c1c;font-weight:700;font-size:14px}
+.status-tip{margin-top:15px;padding:11px 13px;border-radius:10px;background:#f8fafc;color:#64748b;font-size:13px}
+footer{padding:32px 15px;background:#061a33;color:#fff;text-align:center}footer p{color:#cbd5e1;font-size:14px}
+@media(max-width:850px){.hero{padding:55px 5%;gap:25px}.hero h1{font-size:40px}.products{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){header{padding:13px 18px}.logo{font-size:21px}.header-btn{padding:9px 12px;font-size:12px}.hero{display:block;text-align:center;padding:45px 18px 35px}.hero-content,.hero-image{width:100%}.hero h1{font-size:32px}.hero p{font-size:15px}.hero-image{margin:28px auto 0;max-width:400px}.services,.how,#complaintForm,#statusSection{padding:45px 18px}.section-head h2{font-size:28px}.products{gap:12px;margin-top:25px}.product-card{padding:13px 9px}.product-icon{height:125px}.product-card h3{font-size:16px}.product-card p{font-size:12px}.product-card button{font-size:13px;padding:10px 5px}.steps{gap:12px}.step{padding:18px 10px}.step h3{font-size:15px}.step p{font-size:12px}.complaint-box{padding:21px 16px;border-radius:17px}.complaint-box h2{font-size:23px}.timeline span{font-size:9px}}
+@media(max-width:380px){.products{grid-template-columns:1fr}.product-icon{height:175px}.steps{grid-template-columns:1fr}.hero h1{font-size:29px}}
 </style>
-
 </head>
 
 <body>
-
 <header>
-
-    <div class="logo">
-        ⚡ My <span>ElectroCare</span>
-    </div>
-
-    <button class="header-btn">
-        📞 Need Help?
-    </button>
-
+<div class="logo">⚡ My <span>ElectroCare</span></div>
+<button class="header-btn" onclick="scrollToStatus()">📋 Check Status</button>
 </header>
 
-
 <section class="hero">
-
-    <div class="hero-content">
-
-        <div class="hero-badge">
-            🛡️ Reliable &nbsp; • &nbsp; Professional &nbsp; • &nbsp; At Your Doorstep
-        </div>
-
-        <h1>
-            Your Home Appliances<br>
-            <span>Our Expert Care</span>
-        </h1>
-
-        <p>
-            Fast, reliable and professional electronics
-            repair service at your doorstep.
-        </p>
-
-        <button class="hero-btn">
-            🔧 Book a Service
-        </button>
-
-    </div>
-
-    <div class="hero-image">
-        <img src="mechanic.png" alt="My ElectroCare Technician">
-    </div>
-
+<div class="hero-content">
+<div class="hero-badge">🛡️ Reliable • Professional • At Your Doorstep</div>
+<h1>Your Home Appliances<br><span>Our Expert Care</span></h1>
+<p>Fast, reliable and professional electronics repair service at your doorstep.</p>
+<button class="hero-btn" onclick="scrollToServices()">🔧 Book a Service</button>
+</div>
+<div class="hero-image"><img src="mechanic.png" alt="My ElectroCare Technician"></div>
 </section>
 
-<section class="services">
-
-    <h2>Our Services</h2>
-
-    <p>
-        Select your electronic appliance and book a service.
-    </p>
-
-    <div class="products">
-
-        <div class="product-card">
-            <div class="product-icon">
-    <img src="led-tv.png" alt="LED TV">
+<section class="services" id="services">
+<div class="section-head"><h2>Our Services</h2><p>Select your electronic appliance and book a service.</p></div>
+<div class="products">
+<div class="product-card"><div class="product-icon"><img src="led-tv.png" alt="LED TV"></div><h3>LED</h3><p>LED repair & service</p><button onclick="selectProduct('LED')">Select</button></div>
+<div class="product-card"><div class="product-icon"><img src="AC.png" alt="AC"></div><h3>AC</h3><p>AC repair & service</p><button onclick="selectProduct('AC')">Select</button></div>
+<div class="product-card"><div class="product-icon"><img src="REF.png" alt="Refrigerator"></div><h3>Refrigerator</h3><p>Fridge repair & service</p><button onclick="selectProduct('Refrigerator')">Select</button></div>
+<div class="product-card"><div class="product-icon"><img src="washing-machine.png" alt="Washing Machine"></div><h3>Washing Machine</h3><p>Washing machine repair</p><button onclick="selectProduct('Washing Machine')">Select</button></div>
+<div class="product-card"><div class="product-icon"><img src="cooler.png" alt="Cooler"></div><h3>Cooler</h3><p>Cooler repair & service</p><button onclick="selectProduct('Cooler')">Select</button></div>
+<div class="product-card"><div class="product-icon"><img src="microwave.png" alt="Microwave"></div><h3>Microwave</h3><p>Microwave repair & service</p><button onclick="selectProduct('Microwave')">Select</button></div>
 </div>
-            <h3>LED</h3>
-            <p>LED repair & service</p>
-            <button onclick="selectProduct('LED')">Select</button>
-        </div>
-
-
-        <div class="product-card">
-            <div class="product-icon">
-    <img src="AC.png" alt="AC">
-</div>
-            <h3>AC</h3>
-            <p>AC repair & service</p>
-            <button onclick="selectProduct('AC')">Select</button>
-        </div>
-
-
-        <div class="product-card">
-           <div class="product-icon">
-    <img src="REF.png" alt="Refrigerator">
-</div>
-            <h3>Refrigerator</h3>
-            <p>Fridge repair & service</p>
-            <button onclick="selectProduct('Refrigerator')">Select</button>
-        </div>
-
-
-        <div class="product-card">
-            <div class="product-icon">
-    <img src="washing-machine.png" alt="Washing Machine">
-</div>
-            <h3>Washing Machine</h3>
-            <p>Washing machine repair</p>
-            <button onclick="selectProduct('Washing Machine')">Select</button>
-        </div>
-
-
-        <div class="product-card">
-            <div class="product-icon">
-    <img src="cooler.png" alt="Cooler">
-</div>
-            <h3>Cooler</h3>
-            <p>Cooler repair & service</p>
-            <button onclick="selectProduct('Cooler')">Select</button>
-        </div>
-
-
-        <div class="product-card">
-         <div class="product-icon">
-    <img src="microwave.png" alt="Microwave">
-</div>
-            <h3>Microwave</h3>
-            <p>Microwave repair & service</p>
-            <button onclick="selectProduct('Microwave')">Select</button>
-        </div>
-
-    </div>
-
 </section>
-
 
 <section class="how">
-
-    <h2>How It Works?</h2>
-
-    <p>Get your appliance repaired in 4 simple steps.</p>
-
-    <div class="steps">
-
-        <div class="step">
-            <div class="step-number">1</div>
-            <h3>Select Appliance</h3>
-            <p>Choose your electronic item.</p>
-        </div>
-
-        <div class="step">
-            <div class="step-number">2</div>
-            <h3>Fill Details</h3>
-            <p>Tell us about the problem.</p>
-        </div>
-
-        <div class="step">
-            <div class="step-number">3</div>
-            <h3>Set Location</h3>
-            <p>Enter your home address.</p>
-        </div>
-
-        <div class="step">
-            <div class="step-number">4</div>
-            <h3>Book Service</h3>
-            <p>Our technician will contact you.</p>
-        </div>
-
-    </div>
-
+<div class="section-head"><h2>How It Works?</h2><p>Get your appliance repaired in 4 simple steps.</p></div>
+<div class="steps">
+<div class="step"><div class="step-number">1</div><h3>Select Appliance</h3><p>Choose your electronic item.</p></div>
+<div class="step"><div class="step-number">2</div><h3>Fill Details</h3><p>Tell us about the problem.</p></div>
+<div class="step"><div class="step-number">3</div><h3>Set Location</h3><p>Enter your home address.</p></div>
+<div class="step"><div class="step-number">4</div><h3>Book Service</h3><p>Our technician will contact you.</p></div>
+</div>
 </section>
 
+<section id="complaintForm" style="display:none">
+<div class="complaint-box">
+<h2>🔧 Book Repair Service</h2><p class="form-subtitle">Fill the details below and submit your service request.</p>
+<div id="selectedProduct">Selected Product</div>
 
-<!-- COMPLAINT FORM -->
+<label>🏷️ Select Company / Brand</label>
+<select id="company"><option value="">Select Company / Brand</option></select>
 
-<section id="complaintForm" style="display:none;">
-
-    <div class="complaint-box">
-
-        <h2>🔧 Book Repair Service</h2>
-
-        <p id="selectedProduct">
-            Selected Product
-        </p>
-
-
-        <label>🏷️ Select Company / Brand</label>
-
-        <select id="company">
-
-            <option value="">
-                Select Company / Brand
-            </option>
-
-        </select>
-
-
-        <input
-            type="text"
-            id="customerName"
-            placeholder="Your Name"
-        >
-
-
-        <input
-            type="tel"
-            id="customerMobile"
-            placeholder="Mobile Number"
-        >
-
-
-        <textarea
-            id="problem"
-            placeholder="Describe your problem..."
-            rows="5"
-        ></textarea>
-
-
-        <label>
-            📸 Upload Product / Problem Photo
-        </label>
-
-        <input
-            type="file"
-            id="problemPhoto"
-            accept="image/*"
-        >
-
-
-        <textarea
-            id="customerAddress"
-            placeholder="Enter your complete home address..."
-            rows="4"
-        ></textarea>
-
-
-        <label>
-            ⏰ When do you need a mechanic?
-        </label>
-
-        <select id="requiredTime">
-
-            <option value="">
-                Select required time
-            </option>
-
-            <option>
-                As soon as possible
-            </option>
-
-            <option>
-                Today
-            </option>
-
-            <option>
-                Tomorrow
-            </option>
-
-            <option>
-                Within 2-3 days
-            </option>
-
-        </select>
-
-
-        <button onclick="getHomeLocation()">
-            📍 My Home Location
-        </button>
-
-
-        <p id="locationStatus">
-            Location not added
-        </p>
-
-
-        <button class="submit-btn" onclick="submitComplaint()">
-    🚀 Submit Complaint
-</button>
-
-    </div>
-
-</section>
-  <!-- CHECK COMPLAINT STATUS -->
-<section id="statusSection">
-
-    <div class="complaint-box">
-
-        <h2>📋 Check Complaint Status</h2>
-
-        <input
-            type="number"
-            id="checkComplaintId"
-            placeholder="Complaint ID">
-
-        <input
-            type="tel"
-            id="checkMobile"
-            placeholder="Mobile Number">
-
-        <button onclick="checkComplaintStatus()">
-            🔍 Check Status
-        </button>
-
-        <div
-            id="complaintStatusResult"
-            style="display:none; margin-top:20px;">
-        </div>
-
-    </div>
-
+<label>👤 Your Name</label><input type="text" id="customerName" placeholder="Your Name">
+<label>📱 Mobile Number</label><input type="tel" id="customerMobile" placeholder="Mobile Number" inputmode="numeric">
+<label>🛠️ Problem</label><textarea id="problem" placeholder="Describe your problem..." rows="5"></textarea>
+<label>📸 Upload Product / Problem Photo</label><input type="file" id="problemPhoto" accept="image/*">
+<label>🏠 Complete Home Address</label><textarea id="customerAddress" placeholder="Enter your complete home address..." rows="4"></textarea>
+<label>⏰ When do you need a mechanic?</label>
+<select id="requiredTime"><option value="">Select required time</option><option>As soon as possible</option><option>Today</option><option>Tomorrow</option><option>Within 2-3 days</option></select>
+<button class="form-btn" onclick="getHomeLocation()">📍 Add My Home Location</button>
+<p id="locationStatus">Location not added</p>
+<button class="form-btn submit-btn" onclick="submitComplaint()">🚀 Submit Complaint</button>
+</div>
 </section>
 
+<section id="statusSection" class="status-section">
+<div class="complaint-box">
+<h2>📋 Check Complaint Status</h2>
+<p class="form-subtitle">Enter your Complaint ID and the same mobile number used while booking.</p>
+<label>🆔 Complaint ID</label><input type="number" id="checkComplaintId" placeholder="Enter Complaint ID" inputmode="numeric">
+<label>📱 Mobile Number</label><input type="tel" id="checkMobile" placeholder="Enter Mobile Number" inputmode="numeric">
+<button class="form-btn" onclick="checkComplaintStatus()">🔍 Check Status</button>
+<div id="complaintStatusResult" class="status-result"></div>
+<div class="status-tip">🔐 Your complaint is searched using both Complaint ID and mobile number.</div>
+</div>
+</section>
 
-<footer>
+<footer><h2>⚡ My ElectroCare</h2><p>Electronics Repair & Home Service</p><p style="margin-top:8px">Professional service at your doorstep.</p></footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const SUPABASE_URL = "https://gbtqdwrrgcxomwhthban.supabase.co";
+const SUPABASE_KEY = "sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
+const supabaseClient = supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const SUPABASE_URL =
-  "https://gbtqdwrrgcxomwhthban.supabase.co";
-
-
-const SUPABASE_KEY =
-  "sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
-
-
-const supabaseClient =
-supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+function scrollToServices(){document.getElementById("services").scrollIntoView({behavior:"smooth"})}
+function scrollToStatus(){document.getElementById("statusSection").scrollIntoView({behavior:"smooth"})}
 
 function selectProduct(product){
-
-    document.getElementById("complaintForm").style.display = "block";
-
-    document.getElementById("selectedProduct").innerText =
-        "Selected Product: " + product;
-
-    const companySelect =
-        document.getElementById("company");
-
-    companySelect.innerHTML =
-        '<option value="">Select Company / Brand</option>';
-
-    let brands = [];
-
-    if(product === "LED"){
-        brands = [
-            "Samsung","LG","Sony","Mi","TCL",
-            "Panasonic","OnePlus","Other"
-        ];
-    }
-
-    if(product === "AC"){
-        brands = [
-            "Voltas","LG","Samsung","Daikin",
-            "Carrier","Blue Star","Hitachi","Other"
-        ];
-    }
-
-    if(product === "Refrigerator"){
-        brands = [
-            "LG","Samsung","Whirlpool","Haier",
-            "Godrej","Panasonic","Other"
-        ];
-    }
-
-    if(product === "Washing Machine"){
-        brands = [
-            "LG","Samsung","Whirlpool","IFB",
-            "Bosch","Haier","Godrej","Other"
-        ];
-    }
-
-    if(product === "Cooler"){
-        brands = [
-            "Symphony","Bajaj","Crompton","Voltas",
-            "Kenstar","Orient","Other"
-        ];
-    }
-
-    if(product === "Microwave"){
-        brands = [
-            "LG","Samsung","IFB","Panasonic",
-            "Bajaj","Godrej","Other"
-        ];
-    }
-
-    brands.forEach(function(brand){
-
-        let option = document.createElement("option");
-
-        option.value = brand;
-        option.textContent = brand;
-
-        companySelect.appendChild(option);
-
-    });
-
-    document.getElementById("complaintForm")
-        .scrollIntoView({
-            behavior:"smooth"
-        });
-
+const form=document.getElementById("complaintForm");
+const company=document.getElementById("company");
+document.getElementById("selectedProduct").innerText="Selected Product: "+product;
+form.style.display="block";
+company.innerHTML='<option value="">Select Company / Brand</option>';
+let brands=[];
+if(product==="LED") brands=["Samsung","LG","Sony","Mi","TCL","Panasonic","OnePlus","Other"];
+if(product==="AC") brands=["Voltas","LG","Samsung","Daikin","Carrier","Blue Star","Hitachi","Other"];
+if(product==="Refrigerator") brands=["LG","Samsung","Whirlpool","Haier","Godrej","Panasonic","Other"];
+if(product==="Washing Machine") brands=["LG","Samsung","Whirlpool","IFB","Bosch","Haier","Godrej","Other"];
+if(product==="Cooler") brands=["Symphony","Bajaj","Crompton","Voltas","Kenstar","Orient","Other"];
+if(product==="Microwave") brands=["LG","Samsung","IFB","Panasonic","Bajaj","Godrej","Other"];
+brands.forEach(b=>{const o=document.createElement("option");o.value=b;o.textContent=b;company.appendChild(o)});
+form.scrollIntoView({behavior:"smooth"});
 }
-
 
 function getHomeLocation(){
-
-    const status =
-        document.getElementById("locationStatus");
-
-    if(!navigator.geolocation){
-
-        status.innerText =
-            "❌ Location support nahi hai.";
-
-        return;
-    }
-
-    status.innerText =
-        "📍 Location detect ho rahi hai...";
-
-    navigator.geolocation.getCurrentPosition(
-
-        function(position){
-
-            const latitude =
-                position.coords.latitude;
-
-            const longitude =
-                position.coords.longitude;
-
-            status.innerText =
-                "✅ Home Location Added";
-
-            window.homeLatitude = latitude;
-            window.homeLongitude = longitude;
-
-        },
-
-        function(error){
-
-            status.innerText =
-                "❌ Location permission allow karo.";
-
-        }
-
-    );
-
+const status=document.getElementById("locationStatus");
+if(!navigator.geolocation){status.innerText="❌ Location support nahi hai.";return}
+status.innerText="📍 Location detect ho rahi hai...";
+navigator.geolocation.getCurrentPosition(
+p=>{window.homeLatitude=p.coords.latitude;window.homeLongitude=p.coords.longitude;status.innerText="✅ Home Location Added";},
+()=>{status.innerText="❌ Location permission allow karo."},
+{enableHighAccuracy:true,timeout:10000,maximumAge:0}
+);
 }
-
 
 async function submitComplaint(){
+const product=document.getElementById("selectedProduct").innerText.replace("Selected Product: ","").trim();
+const company=document.getElementById("company").value;
+const name=document.getElementById("customerName").value.trim();
+const mobile=document.getElementById("customerMobile").value.trim();
+const problem=document.getElementById("problem").value.trim();
+const address=document.getElementById("customerAddress").value.trim();
+const requiredTime=document.getElementById("requiredTime").value;
+const photo=document.getElementById("problemPhoto").files[0];
 
-    const product =
-        document.getElementById("selectedProduct")
-        .innerText
-        .replace("Selected Product: ","");
-
-    const company =
-        document.getElementById("company").value;
-
-    const name =
-        document.getElementById("customerName").value;
-
-    const mobile =
-        document.getElementById("customerMobile").value;
-
-    const problem =
-        document.getElementById("problem").value;
-
-    const address =
-        document.getElementById("customerAddress").value;
-
-    const requiredTime =
-        document.getElementById("requiredTime").value;
-
-    const photo =
-        document.getElementById("problemPhoto").files[0];
-
-
-    if(!name || !mobile || !company ||
-       !problem || !address || !requiredTime){
-
-        alert("⚠️ Please fill all details.");
-        return;
-    }
-  async function checkComplaintStatus(){
-
-    const id =
-        document.getElementById("checkComplaintId").value.trim();
-
-    const mobile =
-        document.getElementById("checkMobile").value.trim();
-
-    if(!id || !mobile){
-        alert("⚠️ Complaint ID aur Mobile Number enter karein.");
-        return;
-    }
-
-    const { data, error } =
-        await supabaseClient
-        .from("Complaints")
-        .select("id,status")
-        .eq("id", Number(id))
-        .eq("mobile", mobile)
-        .single();
-
-    if(error || !data){
-
-        document.getElementById("complaintStatusResult").style.display =
-            "block";
-
-        document.getElementById("complaintStatusResult").innerHTML =
-            "❌ Complaint nahi mili. Complaint ID aur Mobile Number check karein.";
-
-        return;
-    }
-
-    document.getElementById("complaintStatusResult").style.display =
-        "block";
-
-    document.getElementById("complaintStatusResult").innerHTML =
-        `
-        <div style="
-            padding:15px;
-            border-radius:10px;
-            background:#f1f5f9;
-            text-align:center;
-        ">
-            <h3>Complaint #${data.id}</h3>
-            <p style="font-size:20px;font-weight:bold;">
-                📌 ${data.status}
-            </p>
-        </div>
-        `;
+if(!name||!mobile||!company||!problem||!address||!requiredTime){
+alert("⚠️ Please fill all details.");return;
 }
 
+const cleanMobile=mobile.replace(/\D/g,"");
+if(cleanMobile.length<10){alert("⚠️ Please enter a valid mobile number.");return}
 
-    let imageUrl = null;
+let imageUrl=null;
 
-
-    /* PHOTO UPLOAD */
-
-    if(photo){
-
-        const fileName =
-            Date.now() + "_" +
-            photo.name.replace(/\s/g,"_");
-
-        const { error: uploadError } =
-            await supabaseClient
-            .storage
-            .from("complaint-images")
-            .upload(fileName, photo);
-
-        if(uploadError){
-
-            alert(
-                "❌ Photo upload nahi hui: "
-                + uploadError.message
-            );
-
-            return;
-        }
-
-
-        const { data: publicData } =
-            supabaseClient
-            .storage
-            .from("complaint-images")
-            .getPublicUrl(fileName);
-
-        imageUrl =
-            publicData.publicUrl;
-    }
-
-
-    /* COMPLAINT SAVE */
-
-    const { data, error } =
-        await supabaseClient
-        .from("Complaints")
-        .insert([{
-
-            customer_name: name,
-            mobile: mobile,
-            product: product,
-            company: company,
-            problem: problem,
-            address: address,
-            required_time: requiredTime,
-            latitude: window.homeLatitude || null,
-            longitude: window.homeLongitude || null,
-            image_url: imageUrl,
-            status: "Pending"
-
-        }])
-        .select();
-
-
-    if(error){
-
-        alert(
-            "❌ Complaint submit nahi hui: "
-            + error.message
-        );
-
-        return;
-    }
-
-
-  alert(
-    "✅ Complaint successfully submitted!\n\n" +
-    "Complaint ID: " + data[0].id +
-    "\n\nIs Complaint ID ko save karke rakhein."
-);
-
-
-    document.getElementById("customerName").value = "";
-    document.getElementById("customerMobile").value = "";
-    document.getElementById("problem").value = "";
-    document.getElementById("customerAddress").value = "";
-    document.getElementById("requiredTime").value = "";
-    document.getElementById("company").value = "";
-    document.getElementById("problemPhoto").value = "";
-
-    document.getElementById("locationStatus").innerText =
-        "Location not added";
-
-
+if(photo){
+const fileName=Date.now()+"_"+photo.name.replace(/\s/g,"_");
+const {error:uploadError}=await supabaseClient.storage.from("complaint-images").upload(fileName,photo);
+if(uploadError){alert("❌ Photo upload nahi hui: "+uploadError.message);return}
+const {data:publicData}=supabaseClient.storage.from("complaint-images").getPublicUrl(fileName);
+imageUrl=publicData.publicUrl;
 }
 
+const {data,error}=await supabaseClient.from("Complaints").insert([{
+customer_name:name,mobile:mobile,product:product,company:company,
+problem:problem,address:address,required_time:requiredTime,
+latitude:window.homeLatitude||null,longitude:window.homeLongitude||null,
+image_url:imageUrl,status:"Pending"
+}]).select();
+
+if(error){alert("❌ Complaint submit nahi hui: "+error.message);return}
+
+alert("✅ Complaint successfully submitted!\n\nComplaint ID: "+data[0].id+"\n\nIs Complaint ID ko save karke rakhein.");
+
+document.getElementById("customerName").value="";
+document.getElementById("customerMobile").value="";
+document.getElementById("problem").value="";
+document.getElementById("customerAddress").value="";
+document.getElementById("requiredTime").value="";
+document.getElementById("company").value="";
+document.getElementById("problemPhoto").value="";
+document.getElementById("locationStatus").innerText="Location not added";
+window.homeLatitude=null;window.homeLongitude=null;
+}
+
+function statusClass(status){
+const s=(status||"").toLowerCase();
+if(s==="pending")return"pending";
+if(s==="accepted")return"accepted";
+if(s==="completed")return"completed";
+if(s==="rejected")return"rejected";
+return"";
+}
+
+function renderStatus(status,id){
+const result=document.getElementById("complaintStatusResult");
+const s=(status||"Pending").toLowerCase();
+const order=["pending","accepted","completed","rejected"];
+let currentIndex=order.indexOf(s);
+if(currentIndex<0)currentIndex=0;
+
+let timeline="";
+["Pending","Accepted","Completed","Rejected"].forEach((name,i)=>{
+const active=i===3 ? s==="rejected" : i<=currentIndex && s!=="rejected";
+timeline+=`<div class="timeline-item ${active?"active":""} ${s===name.toLowerCase()?"current":""}">
+<div class="dot">${active?"✓":i+1}</div><span>${name}</span></div>`;
+});
+
+result.style.display="block";
+result.innerHTML=`<div class="status-card">
+<h3>Complaint #${id}</h3>
+<div class="status-id">Current service status</div>
+<span class="status-badge ${statusClass(status)}">${s.toUpperCase()}</span>
+<div class="timeline">${timeline}</div>
+</div>`;
+}
+
+async function checkComplaintStatus(){
+const id=document.getElementById("checkComplaintId").value.trim();
+const mobile=document.getElementById("checkMobile").value.trim();
+const result=document.getElementById("complaintStatusResult");
+
+if(!id||!mobile){
+result.style.display="block";
+result.innerHTML='<div class="status-error">⚠️ Complaint ID aur Mobile Number enter karein.</div>';
+return;
+}
+
+const cleanMobile=mobile.replace(/\D/g,"");
+
+const {data,error}=await supabaseClient
+.from("Complaints")
+.select("id,status")
+.eq("id",Number(id))
+.eq("mobile",mobile)
+.maybeSingle();
+
+if(error){
+console.error(error);
+result.style.display="block";
+result.innerHTML='<div class="status-error">❌ Status check nahi ho paya. Please try again.</div>';
+return;
+}
+
+if(!data){
+result.style.display="block";
+result.innerHTML='<div class="status-error">❌ Complaint nahi mili. Complaint ID aur Mobile Number check karein.</div>';
+return;
+}
+
+renderStatus(data.status,data.id);
+}
 </script>
-
-
-
-
 </body>
-
 </html>
