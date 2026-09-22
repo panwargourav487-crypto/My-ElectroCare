@@ -1004,6 +1004,58 @@ async function submitComplaint(){
 
     document.getElementById("locationStatus").innerText =
         "Location not added";
+  async function checkComplaintStatus(){
+
+    const id =
+        document.getElementById("checkComplaintId").value.trim();
+
+    const mobile =
+        document.getElementById("checkMobile").value.trim();
+
+    if(!id || !mobile){
+        alert("⚠️ Complaint ID aur Mobile Number enter karein.");
+        return;
+    }
+
+    const { data, error } =
+        await supabaseClient
+        .from("Complaints")
+        .select("id,status")
+        .eq("id", Number(id))
+        .eq("mobile", mobile)
+        .single();
+
+    if(error || !data){
+
+        document.getElementById("complaintStatusResult").style.display =
+            "block";
+
+        document.getElementById("complaintStatusResult").innerHTML =
+            "❌ Complaint nahi mili. Complaint ID aur Mobile Number check karein.";
+
+        return;
+    }
+
+    document.getElementById("complaintStatusResult").style.display =
+        "block";
+
+    document.getElementById("complaintStatusResult").innerHTML =
+        `
+        <div style="
+            padding:15px;
+            border-radius:10px;
+            background:#f1f5f9;
+            text-align:center;
+        ">
+            <h3>Complaint #${data.id}</h3>
+
+            <p style="font-size:20px;font-weight:bold;">
+                📌 ${data.status}
+            </p>
+
+        </div>
+        `;
+}
 
 }
 
