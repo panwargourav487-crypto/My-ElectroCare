@@ -750,16 +750,27 @@ async function viewComplaint(id){
     document.getElementById("viewModal").style.display =
         "flex";
 }
-    async function updateComplaintStatus(){
+   async function updateComplaintStatus(){
 
-   const id = Number(
-    document.getElementById("viewId").innerText.trim()
-);
+    const id = Number(
+        document.getElementById("viewId").innerText.trim()
+    );
 
     const status =
         document.getElementById("viewStatus").value;
 
-    const { data, error } = await supabaseClient
+    const { data: sessionData } =
+        await supabaseClient.auth.getSession();
+
+    if(!sessionData.session){
+
+        alert("❌ Admin session expired. Please login again.");
+
+        return;
+    }
+
+    const { data, error } =
+        await supabaseClient
         .from("Complaints")
         .update({
             status: status
@@ -769,10 +780,31 @@ async function viewComplaint(id){
 
     if(error){
 
-        alert("❌ Update Error: " + error.message);
-        return;
+        alert("❌ Status update error:\n" + error.message);
 
+        return;
     }
+
+    if(!data || data.length === 0){
+
+        alert(
+            "❌ 0 rows updated.\n\n" +
+            "Admin session ya RLS permission issue hai."
+        );
+
+        return;
+    }
+
+    alert(
+        "✅ Status updated!\n\n" +
+        "Complaint ID: " + data[0].id +
+        "\nStatus: " + data[0].status
+    );
+
+    closeViewComplaint();
+
+    loadComplaints();
+}
 
     console.log("UPDATED DATA:", data);
 
