@@ -764,7 +764,7 @@ async function viewComplaint(id){
     document.getElementById("viewModal").style.display =
         "flex";
 }
-  async function updateComplaintStatus(){
+ async function updateComplaintStatus(){
 
     const id = Number(
         document.getElementById("viewId").innerText.trim()
@@ -772,16 +772,6 @@ async function viewComplaint(id){
 
     const status =
         document.getElementById("viewStatus").value;
-
-    const { data: sessionData } =
-        await supabaseClient.auth.getSession();
-
-    if(!sessionData.session){
-
-        alert("❌ Admin session expired. Please login again.");
-
-        return;
-    }
     const { data, error } =
         await supabaseClient
         .from("Complaints")
