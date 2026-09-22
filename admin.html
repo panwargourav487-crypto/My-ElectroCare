@@ -530,12 +530,13 @@ class="container">
 
 const SUPABASE_URL = 
     "https://gbtqdwrrgcxomwhthban.supabase.co";
+    
  
 
-  
 
 const SUPABASE_KEY =
     "sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
+
  
  
 const supabaseClient =
@@ -764,7 +765,7 @@ async function viewComplaint(id){
     document.getElementById("viewModal").style.display =
         "flex";
 }
- async function updateComplaintStatus(){
+async function updateComplaintStatus(){
 
     const id = Number(
         document.getElementById("viewId").innerText.trim()
@@ -772,29 +773,22 @@ async function viewComplaint(id){
 
     const status =
         document.getElementById("viewStatus").value;
-    const { data, error } =
+
+    const { error } =
         await supabaseClient
         .from("Complaints")
         .update({
             status: status
         })
-        .eq("id", id)
-        .select("id,status");
+        .eq("id", id);
 
     if(error){
 
         console.error("Status update error:", error);
 
-        alert("❌ Status update error:\n\n" + error.message);
-
-        return;
-    }
-
-    if(!data || data.length === 0){
-
         alert(
-            "❌ 0 rows updated.\n\n" +
-            "Complaint ID match nahi hui ya Admin permission issue hai."
+            "❌ Status update error:\n\n" +
+            error.message
         );
 
         return;
@@ -802,15 +796,14 @@ async function viewComplaint(id){
 
     alert(
         "✅ Status updated!\n\n" +
-        "Complaint ID: " + data[0].id +
-        "\nStatus: " + data[0].status
+        "Complaint ID: " + id +
+        "\nStatus: " + status
     );
 
     closeViewComplaint();
 
     await loadComplaints();
 }
-
 
 function closeViewComplaint(){
 
