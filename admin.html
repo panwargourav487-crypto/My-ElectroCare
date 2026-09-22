@@ -764,7 +764,7 @@ async function viewComplaint(id){
     document.getElementById("viewModal").style.display =
         "flex";
 }
-   async function updateComplaintStatus(){
+  async function updateComplaintStatus(){
 
     const id = Number(
         document.getElementById("viewId").innerText.trim()
@@ -773,16 +773,47 @@ async function viewComplaint(id){
     const status =
         document.getElementById("viewStatus").value;
 
-    const { data: sessionData } =
-        await supabaseClient.auth.getSession();
+    const { data, error } =
+        await supabaseClient
+        .from("Complaints")
+        .update({
+            status: status
+        })
+        .eq("id", id)
+        .select("id,status");
 
-    if(!sessionData.session){
+    if(error){
 
-        alert("❌ Admin session expired. Please login again.");
+        console.error("Status update error:", error);
+
+        alert(
+            "❌ Status update nahi hua:\n\n" +
+            error.message
+        );
 
         return;
     }
 
+    if(!data || data.length === 0){
+
+        alert(
+            "❌ 0 rows updated.\n\n" +
+            "Complaint ID: " + id
+        );
+
+        return;
+    }
+
+    alert(
+        "✅ Status updated!\n\n" +
+        "Complaint ID: " + data[0].id +
+        "\nStatus: " + data[0].status
+    );
+
+    closeViewComplaint();
+
+    await loadComplaints();
+}
     const { data, error } =
         await supabaseClient
         .from("Complaints")
