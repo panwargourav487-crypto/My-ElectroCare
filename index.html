@@ -9,22 +9,57 @@
 <title>My ElectroCare - Electronics Repair & Home Service</title>
 
 <style>
-    .hero{
-    position:relative;
+  .hero{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:40px;
+    padding:70px 6%;
+    background:linear-gradient(110deg,#f4faff,#ffffff);
+    min-height:560px;
     overflow:hidden;
 }
 
+.hero-content{
+    width:50%;
+}
+
+.hero-badge{
+    display:inline-block;
+    background:#e3f3ff;
+    color:#087ff5;
+    padding:12px 20px;
+    border-radius:30px;
+    font-weight:bold;
+    margin-bottom:25px;
+}
+
+.hero h1{
+    font-size:54px;
+    line-height:1.08;
+    margin:0 0 20px;
+    color:#172033;
+}
+
+.hero h1 span{
+    color:#087ff5;
+}
+
+.hero p{
+    font-size:20px;
+    line-height:1.6;
+    color:#526174;
+    max-width:600px;
+}
+
 .hero-image{
-    width:420px;
-    max-width:45%;
-    margin-left:auto;
-    margin-top:-120px;
+    width:48%;
 }
 
 .hero-image img{
     width:100%;
     display:block;
-    border-radius:20px;
+    border-radius:24px;
 }
 
 *{
@@ -373,25 +408,33 @@ footer p{
 
 <section class="hero">
 
-    <h1>
-        Your Home Appliances<br>
-        <span>Our Expert Care</span>
-    </h1>
+    <div class="hero-content">
 
-    <p>
-        Fast, reliable and professional electronics
-        repair service at your doorstep.
-    </p>
+        <div class="hero-badge">
+            🛡️ Reliable &nbsp; • &nbsp; Professional &nbsp; • &nbsp; At Your Doorstep
+        </div>
 
-    <button class="hero-btn">
-        🔧 Book a Service
-    </button>
+        <h1>
+            Your Home Appliances<br>
+            <span>Our Expert Care</span>
+        </h1>
+
+        <p>
+            Fast, reliable and professional electronics
+            repair service at your doorstep.
+        </p>
+
+        <button class="hero-btn">
+            🔧 Book a Service
+        </button>
+
+    </div>
+
     <div class="hero-image">
-    <img src="mechanic.png" alt="My ElectroCare Technician">
-</div>
+        <img src="mechanic.png" alt="My ElectroCare Technician">
+    </div>
 
 </section>
-
 
 <section class="services">
 
