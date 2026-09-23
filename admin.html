@@ -304,6 +304,10 @@ th{
     background:#dc2626;
 }
 
+.invoice-btn{
+    background:#7c3aed;
+}
+
 .close-btn{
     background:#64748b;
 }
@@ -350,6 +354,49 @@ th{
         font-size:23px;
     }
 
+}
+
+
+
+/* =====================================
+   INVOICE SYSTEM
+===================================== */
+.invoice-btn{background:#7c3aed!important;}
+.invoice-modal-box{max-width:900px;}
+.invoice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.invoice-grid .full{grid-column:1/-1;}
+.invoice-grid label{display:block;font-weight:bold;margin:8px 0 6px;color:#334155;}
+.invoice-grid input,.invoice-grid textarea,.invoice-grid select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px;}
+.invoice-grid textarea{min-height:85px;resize:vertical;}
+.parts-box{border:1px solid #e2e8f0;border-radius:10px;padding:12px;background:#f8fafc;}
+.part-row{display:grid;grid-template-columns:1fr 150px 42px;gap:8px;margin-bottom:8px;}
+.part-row input{margin:0;}
+.part-remove{border:0;background:#fee2e2;color:#b91c1c;border-radius:8px;font-weight:bold;}
+.add-part{border:0;background:#0f766e;color:white;padding:9px 12px;border-radius:8px;font-weight:bold;}
+.invoice-total{margin-top:14px;background:#eff6ff;border-radius:10px;padding:15px;text-align:right;font-size:20px;font-weight:bold;color:#0f172a;}
+.invoice-preview{margin-top:20px;border:1px solid #cbd5e1;border-radius:12px;padding:26px;background:white;}
+.invoice-preview .brand{display:flex;justify-content:space-between;gap:20px;border-bottom:2px solid #0f172a;padding-bottom:15px;margin-bottom:18px;}
+.invoice-preview h2{margin:0 0 5px;color:#0f172a;}
+.invoice-preview table{min-width:0;width:100%;}
+.invoice-preview th{background:#f1f5f9;}
+.invoice-preview .grand{font-size:20px;font-weight:bold;text-align:right;margin-top:15px;}
+.invoice-preview .thanks{text-align:center;margin-top:25px;color:#64748b;}
+.invoice-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px;}
+.invoice-actions button{border:0;border-radius:8px;padding:11px 15px;color:white;font-weight:bold;}
+.print-btn{background:#0f766e;}
+.invoice-wa-btn{background:#25D366;}
+.invoice-close-btn{background:#64748b;}
+@media(max-width:650px){
+  .invoice-grid{grid-template-columns:1fr;}
+  .invoice-grid .full{grid-column:auto;}
+  .part-row{grid-template-columns:1fr 110px 42px;}
+  .invoice-preview{padding:15px;}
+  .invoice-preview .brand{flex-direction:column;}
+}
+@media print{
+  body *{visibility:hidden!important;}
+  #invoicePrintArea,#invoicePrintArea *{visibility:visible!important;}
+  #invoicePrintArea{position:absolute!important;left:0!important;top:0!important;width:100%!important;border:0!important;}
 }
 
 </style>
@@ -717,6 +764,15 @@ th{
 
 
             <button
+                class="invoice-btn"
+                onclick="openInvoiceModal()">
+
+                🧾 Create Invoice
+
+            </button>
+
+
+            <button
                 class="delete-btn"
                 onclick="deleteComplaint()">
 
@@ -741,17 +797,245 @@ th{
 </div>
 
 
+
+
+<!-- =====================================
+     INVOICE MODAL
+===================================== -->
+<div id="invoiceModal" class="modal">
+  <div class="modal-box invoice-modal-box">
+    <h2>🧾 My ElectroCare Invoice</h2>
+    <p style="color:#64748b;margin-top:-8px;">Complaint details are filled automatically. Add the repair/charge details below.</p>
+
+    <div class="invoice-grid">
+      <div>
+        <label>Invoice Number</label>
+        <input id="invoiceNumber" type="text" readonly>
+      </div>
+      <div>
+        <label>Invoice Date</label>
+        <input id="invoiceDate" type="date">
+      </div>
+
+      <div>
+        <label>Customer Name</label>
+        <input id="invoiceCustomerName" type="text">
+      </div>
+      <div>
+        <label>Mobile Number</label>
+        <input id="invoiceCustomerMobile" type="tel">
+      </div>
+
+      <div class="full">
+        <label>Address</label>
+        <textarea id="invoiceCustomerAddress"></textarea>
+      </div>
+
+      <div>
+        <label>Appliance</label>
+        <input id="invoiceAppliance" type="text">
+      </div>
+      <div>
+        <label>Brand / Company</label>
+        <input id="invoiceBrand" type="text">
+      </div>
+
+      <div>
+        <label>Model</label>
+        <input id="invoiceModel" type="text" placeholder="Optional">
+      </div>
+      <div>
+        <label>Complaint ID</label>
+        <input id="invoiceComplaintId" type="text" readonly>
+      </div>
+
+      <div class="full">
+        <label>Customer Complaint</label>
+        <textarea id="invoiceComplaint"></textarea>
+      </div>
+
+      <div class="full">
+        <label>Work Done</label>
+        <textarea id="invoiceWorkDone" placeholder="Example: Drain pump replaced and machine tested successfully."></textarea>
+      </div>
+
+      <div class="full">
+        <label>Parts / Materials</label>
+        <div class="parts-box">
+          <div id="invoicePartsList"></div>
+          <button type="button" class="add-part" onclick="addInvoicePart()">＋ Add Part</button>
+        </div>
+      </div>
+
+      <div>
+        <label>Service Charge (₹)</label>
+        <input id="invoiceServiceCharge" type="number" min="0" step="0.01" value="0" oninput="calculateInvoiceTotal()">
+      </div>
+      <div>
+        <label>Visiting Charge (₹)</label>
+        <input id="invoiceVisitingCharge" type="number" min="0" step="0.01" value="0" oninput="calculateInvoiceTotal()">
+      </div>
+      <div>
+        <label>Other Charge (₹)</label>
+        <input id="invoiceOtherCharge" type="number" min="0" step="0.01" value="0" oninput="calculateInvoiceTotal()">
+      </div>
+      <div>
+        <label>Payment Status</label>
+        <select id="invoicePaymentStatus">
+          <option value="Paid">Paid</option>
+          <option value="Pending">Pending</option>
+          <option value="Partially Paid">Partially Paid</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Warranty</label>
+        <input id="invoiceWarranty" type="text" placeholder="Example: 30 days on replaced part">
+      </div>
+      <div>
+        <label>Remarks</label>
+        <input id="invoiceRemarks" type="text" placeholder="Optional">
+      </div>
+    </div>
+
+    <div id="invoiceTotal" class="invoice-total">Grand Total: ₹0.00</div>
+
+    <div class="invoice-actions">
+      <button style="background:#7c3aed" onclick="saveInvoice()">💾 Save Invoice</button>
+      <button class="print-btn" onclick="printInvoice()">🖨️ Print / Save PDF</button>
+      <button class="invoice-wa-btn" onclick="whatsappInvoice()">💬 WhatsApp</button>
+      <button class="invoice-close-btn" onclick="closeInvoiceModal()">✖ Close</button>
+    </div>
+
+    <div id="invoicePrintArea" class="invoice-preview" style="display:none;"></div>
+  </div>
+</div>
+
+
+
+<!-- =====================================
+     CREATE INVOICE MODAL
+===================================== -->
+<div id="invoiceModal" class="modal">
+    <div class="modal-box" style="max-width:760px;">
+
+        <h2>🧾 Create My ElectroCare Invoice</h2>
+        <p style="color:#64748b;">
+            Complaint details are filled automatically. Add the actual repair work and charges.
+        </p>
+
+        <div class="detail">
+            <b>Customer</b>
+            <span id="invoiceCustomer">-</span>
+        </div>
+
+        <div class="detail">
+            <b>Mobile</b>
+            <span id="invoiceMobile">-</span>
+        </div>
+
+        <div class="detail">
+            <b>Complaint ID</b>
+            <span id="invoiceComplaintId">-</span>
+        </div>
+
+        <div class="detail">
+            <b>Appliance</b>
+            <span id="invoiceAppliance">-</span>
+        </div>
+
+        <label style="display:block;margin-top:15px;font-weight:bold;">🛠️ Work Done</label>
+        <textarea id="invoiceWorkDone" rows="4"
+            placeholder="Example: Drain pump replaced and machine tested."
+            style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;"></textarea>
+
+        <label style="display:block;margin-top:15px;font-weight:bold;">🔩 Parts / Spare Parts</label>
+        <textarea id="invoiceParts" rows="4"
+            placeholder="Example: Drain Pump - ₹850&#10;Capacitor - ₹250"
+            style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;"></textarea>
+
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:15px;">
+            <div>
+                <label style="font-weight:bold;">Part Charges</label>
+                <input id="invoicePartCharge" type="number" min="0" step="0.01" value="0"
+                    oninput="calculateInvoiceTotal()"
+                    style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;">
+            </div>
+
+            <div>
+                <label style="font-weight:bold;">Service Charge</label>
+                <input id="invoiceServiceCharge" type="number" min="0" step="0.01" value="0"
+                    oninput="calculateInvoiceTotal()"
+                    style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;">
+            </div>
+
+            <div>
+                <label style="font-weight:bold;">Visiting Charge</label>
+                <input id="invoiceVisitingCharge" type="number" min="0" step="0.01" value="0"
+                    oninput="calculateInvoiceTotal()"
+                    style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;">
+            </div>
+
+            <div>
+                <label style="font-weight:bold;">Other Charge</label>
+                <input id="invoiceOtherCharge" type="number" min="0" step="0.01" value="0"
+                    oninput="calculateInvoiceTotal()"
+                    style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;">
+            </div>
+        </div>
+
+        <div style="margin-top:18px;padding:18px;background:#f8fafc;border-radius:12px;">
+            <div style="font-size:14px;color:#64748b;">Grand Total</div>
+            <div id="invoiceGrandTotal"
+                 style="font-size:30px;font-weight:bold;margin-top:5px;">
+                ₹0
+            </div>
+        </div>
+
+        <label style="display:block;margin-top:15px;font-weight:bold;">💳 Payment Status</label>
+        <select id="invoicePaymentStatus"
+            style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;">
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+        </select>
+
+        <label style="display:block;margin-top:15px;font-weight:bold;">🛡️ Warranty</label>
+        <input id="invoiceWarranty" type="text"
+            placeholder="Example: 30 days on replaced part"
+            style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;">
+
+        <label style="display:block;margin-top:15px;font-weight:bold;">📝 Remarks</label>
+        <textarea id="invoiceRemarks" rows="3"
+            placeholder="Additional remarks"
+            style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;"></textarea>
+
+        <div class="action-row">
+            <button class="save-btn" style="margin-top:0;"
+                onclick="saveInvoice()">
+                💾 Save Invoice
+            </button>
+
+            <button class="close-btn"
+                onclick="closeInvoiceModal()">
+                ✖ Close
+            </button>
+        </div>
+
+    </div>
+</div>
+
 <script>
 
 /* =====================================
    SUPABASE CONFIG
 ===================================== */
 
-const SUPABASE_URL =
-   "https://gbtqdwrrgcxomwhthban.supabase.co";
+const SUPABASE_URL ="https://gbtqdwrrgcxomwhthban.supabase.co";
+  
 
-const SUPABASE_ANON_KEY =
-"sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
+const SUPABASE_ANON_KEY ="sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
+
+
 
 
 const supabaseClient =
@@ -764,6 +1048,8 @@ const supabaseClient =
 /* CURRENT COMPLAINT */
 
 let currentComplaint = null;
+let currentInvoice = null;
+let invoiceParts = [];
 
 
 /* =====================================
@@ -1554,6 +1840,734 @@ Thank You 🙏`;
 
 }
 
+
+
+
+/* =====================================
+   INVOICE SYSTEM
+===================================== */
+function money(value){
+    return Number(value || 0).toFixed(2);
+}
+
+function todayISO(){
+    const d = new Date();
+    const m = String(d.getMonth()+1).padStart(2,"0");
+    const day = String(d.getDate()).padStart(2,"0");
+    return `${d.getFullYear()}-${m}-${day}`;
+}
+
+function generateInvoiceNumber(){
+    const d = new Date();
+    const date = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+    const random = Math.floor(1000 + Math.random()*9000);
+    return `MEC-${date}-${random}`;
+}
+
+function openInvoiceModal(){
+    if(!currentComplaint){
+        alert("❌ Complaint select nahi hai.");
+        return;
+    }
+
+    currentInvoice = null;
+    invoiceParts = [];
+
+    document.getElementById("invoiceNumber").value = generateInvoiceNumber();
+    document.getElementById("invoiceDate").value = todayISO();
+    document.getElementById("invoiceComplaintId").value = currentComplaint.id || "";
+    document.getElementById("invoiceCustomerName").value = currentComplaint.customer_name || "";
+    document.getElementById("invoiceCustomerMobile").value = currentComplaint.mobile || "";
+    document.getElementById("invoiceCustomerAddress").value = currentComplaint.address || "";
+    document.getElementById("invoiceAppliance").value = currentComplaint.product || "";
+    document.getElementById("invoiceBrand").value = currentComplaint.company || "";
+    document.getElementById("invoiceModel").value = currentComplaint.model || "";
+    document.getElementById("invoiceComplaint").value = currentComplaint.problem || "";
+    document.getElementById("invoiceWorkDone").value = "";
+    document.getElementById("invoiceServiceCharge").value = "0";
+    document.getElementById("invoiceVisitingCharge").value = "0";
+    document.getElementById("invoiceOtherCharge").value = "0";
+    document.getElementById("invoicePaymentStatus").value = "Paid";
+    document.getElementById("invoiceWarranty").value = "";
+    document.getElementById("invoiceRemarks").value = "";
+    document.getElementById("invoicePrintArea").style.display = "none";
+
+    addInvoicePart();
+    calculateInvoiceTotal();
+    document.getElementById("invoiceModal").style.display = "flex";
+}
+
+function closeInvoiceModal(){
+    document.getElementById("invoiceModal").style.display = "none";
+    currentInvoice = null;
+    invoiceParts = [];
+}
+
+function addInvoicePart(name="", price=""){
+    invoiceParts.push({name:String(name || ""), price:Number(price || 0)});
+    renderInvoiceParts();
+}
+
+function removeInvoicePart(index){
+    invoiceParts.splice(index,1);
+    if(invoiceParts.length === 0) invoiceParts.push({name:"",price:0});
+    renderInvoiceParts();
+    calculateInvoiceTotal();
+}
+
+function renderInvoiceParts(){
+    const box = document.getElementById("invoicePartsList");
+    box.innerHTML = invoiceParts.map((part,index)=>`
+        <div class="part-row">
+            <input type="text" placeholder="Part / material name" value="${escapeHTML(part.name)}" oninput="updateInvoicePartName(${index},this.value)">
+            <input type="number" min="0" step="0.01" placeholder="Price" value="${Number(part.price||0)}" oninput="updateInvoicePartPrice(${index},this.value)">
+            <button type="button" class="part-remove" onclick="removeInvoicePart(${index})">×</button>
+        </div>
+    `).join("");
+}
+
+function updateInvoicePartName(index,value){
+    invoiceParts[index].name = value;
+}
+
+function updateInvoicePartPrice(index,value){
+    invoiceParts[index].price = Number(value || 0);
+    calculateInvoiceTotal();
+}
+
+function getInvoiceParts(){
+    return invoiceParts
+        .map(p=>({name:String(p.name||"").trim(),price:Number(p.price||0)}))
+        .filter(p=>p.name || p.price>0);
+}
+
+function calculateInvoiceTotal(){
+    const partsTotal = getInvoiceParts().reduce((sum,p)=>sum+Number(p.price||0),0);
+    const service = Number(document.getElementById("invoiceServiceCharge")?.value || 0);
+    const visiting = Number(document.getElementById("invoiceVisitingCharge")?.value || 0);
+    const other = Number(document.getElementById("invoiceOtherCharge")?.value || 0);
+    const total = partsTotal + service + visiting + other;
+    const el = document.getElementById("invoiceTotal");
+    if(el) el.innerText = `Grand Total: ₹${money(total)}`;
+    return {partsTotal,service,visiting,other,total};
+}
+
+async function saveInvoice(){
+    if(!currentComplaint){
+        alert("❌ Complaint select nahi hai.");
+        return;
+    }
+
+    const {data:userData} = await supabaseClient.auth.getUser();
+    if(!userData || !userData.user){
+        alert("❌ Please login first.");
+        return;
+    }
+
+    const totals = calculateInvoiceTotal();
+    const invoiceNumber = document.getElementById("invoiceNumber").value.trim();
+    if(!invoiceNumber){
+        alert("❌ Invoice number missing hai.");
+        return;
+    }
+
+    const payload = {
+        invoice_number: invoiceNumber,
+        complaint_id: Number(currentComplaint.id),
+        customer_name: document.getElementById("invoiceCustomerName").value.trim(),
+        customer_mobile: document.getElementById("invoiceCustomerMobile").value.trim(),
+        customer_address: document.getElementById("invoiceCustomerAddress").value.trim(),
+        appliance: document.getElementById("invoiceAppliance").value.trim(),
+        brand: document.getElementById("invoiceBrand").value.trim(),
+        model: document.getElementById("invoiceModel").value.trim(),
+        complaint: document.getElementById("invoiceComplaint").value.trim(),
+        work_done: document.getElementById("invoiceWorkDone").value.trim(),
+        parts: getInvoiceParts(),
+        service_charge: totals.service,
+        visiting_charge: totals.visiting,
+        other_charge: totals.other,
+        grand_total: totals.total,
+        payment_status: document.getElementById("invoicePaymentStatus").value,
+        warranty: document.getElementById("invoiceWarranty").value.trim(),
+        remarks: document.getElementById("invoiceRemarks").value.trim(),
+        invoice_date: document.getElementById("invoiceDate").value ? new Date(document.getElementById("invoiceDate").value+"T00:00:00").toISOString() : new Date().toISOString(),
+        updated_at: new Date().toISOString()
+    };
+
+    const {data,error} = currentInvoice
+        ? await supabaseClient.from("Invoices").update(payload).eq("id",currentInvoice.id).select("*").single()
+        : await supabaseClient.from("Invoices").insert(payload).select("*").single();
+
+    if(error){
+        console.error("Invoice save error:",error);
+        alert("❌ Invoice save nahi hua:\n\n"+error.message);
+        return;
+    }
+
+    currentInvoice = data;
+    renderInvoicePreview(data);
+    alert("✅ Invoice successfully saved!");
+}
+
+function renderInvoicePreview(invoice){
+    const parts = Array.isArray(invoice.parts) ? invoice.parts : [];
+    const partsRows = parts.length ? parts.map(p=>`<tr><td>${escapeHTML(p.name || "-")}</td><td style="text-align:right">₹${money(p.price)}</td></tr>`).join("") : `<tr><td>Service / Labour</td><td style="text-align:right">₹0.00</td></tr>`;
+    const date = invoice.invoice_date ? new Date(invoice.invoice_date).toLocaleDateString("en-IN") : new Date().toLocaleDateString("en-IN");
+    const area = document.getElementById("invoicePrintArea");
+    area.innerHTML = `
+      <div class="brand">
+        <div><h2>⚡ My ElectroCare</h2><div>Electronics Repair & Home Service</div></div>
+        <div style="text-align:right"><strong>INVOICE</strong><br>${escapeHTML(invoice.invoice_number)}<br>${date}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+        <div><strong>Bill To</strong><br>${escapeHTML(invoice.customer_name||"-")}<br>${escapeHTML(invoice.customer_mobile||"-")}<br>${escapeHTML(invoice.customer_address||"-")}</div>
+        <div><strong>Complaint</strong><br>ID: ${escapeHTML(invoice.complaint_id||"-")}<br>${escapeHTML(invoice.appliance||"-")} — ${escapeHTML(invoice.brand||"-")} ${escapeHTML(invoice.model||"")}</div>
+      </div>
+      <div style="margin-bottom:15px"><strong>Complaint:</strong> ${escapeHTML(invoice.complaint||"-")}<br><strong>Work Done:</strong> ${escapeHTML(invoice.work_done||"-")}</div>
+      <table>
+        <thead><tr><th>Description</th><th style="text-align:right">Amount</th></tr></thead>
+        <tbody>
+          ${partsRows}
+          <tr><td>Service Charge</td><td style="text-align:right">₹${money(invoice.service_charge)}</td></tr>
+          <tr><td>Visiting Charge</td><td style="text-align:right">₹${money(invoice.visiting_charge)}</td></tr>
+          <tr><td>Other Charge</td><td style="text-align:right">₹${money(invoice.other_charge)}</td></tr>
+        </tbody>
+      </table>
+      <div class="grand">Grand Total: ₹${money(invoice.grand_total)}</div>
+      <div style="margin-top:12px"><strong>Payment:</strong> ${escapeHTML(invoice.payment_status||"-")} &nbsp; | &nbsp; <strong>Warranty:</strong> ${escapeHTML(invoice.warranty||"-")}</div>
+      ${invoice.remarks ? `<div style="margin-top:8px"><strong>Remarks:</strong> ${escapeHTML(invoice.remarks)}</div>` : ""}
+      <div class="thanks">Thank you for choosing My ElectroCare 🙏</div>
+    `;
+    area.style.display = "block";
+}
+
+async function loadExistingInvoice(){
+    if(!currentComplaint) return null;
+    const {data,error} = await supabaseClient.from("Invoices").select("*").eq("complaint_id",Number(currentComplaint.id)).order("created_at",{ascending:false}).limit(1);
+    if(error){
+        console.error("Invoice load error:",error);
+        return null;
+    }
+    return data && data.length ? data[0] : null;
+}
+
+async function openInvoiceModal(){
+    if(!currentComplaint){
+        alert("❌ Complaint select nahi hai.");
+        return;
+    }
+
+    currentInvoice = await loadExistingInvoice();
+    invoiceParts = [];
+
+    const existing = currentInvoice;
+    document.getElementById("invoiceNumber").value = existing?.invoice_number || generateInvoiceNumber();
+    document.getElementById("invoiceDate").value = existing?.invoice_date ? new Date(existing.invoice_date).toISOString().slice(0,10) : todayISO();
+    document.getElementById("invoiceComplaintId").value = currentComplaint.id || "";
+    document.getElementById("invoiceCustomerName").value = existing?.customer_name ?? currentComplaint.customer_name ?? "";
+    document.getElementById("invoiceCustomerMobile").value = existing?.customer_mobile ?? currentComplaint.mobile ?? "";
+    document.getElementById("invoiceCustomerAddress").value = existing?.customer_address ?? currentComplaint.address ?? "";
+    document.getElementById("invoiceAppliance").value = existing?.appliance ?? currentComplaint.product ?? "";
+    document.getElementById("invoiceBrand").value = existing?.brand ?? currentComplaint.company ?? "";
+    document.getElementById("invoiceModel").value = existing?.model ?? currentComplaint.model ?? "";
+    document.getElementById("invoiceComplaint").value = existing?.complaint ?? currentComplaint.problem ?? "";
+    document.getElementById("invoiceWorkDone").value = existing?.work_done ?? "";
+    document.getElementById("invoiceServiceCharge").value = existing?.service_charge ?? 0;
+    document.getElementById("invoiceVisitingCharge").value = existing?.visiting_charge ?? 0;
+    document.getElementById("invoiceOtherCharge").value = existing?.other_charge ?? 0;
+    document.getElementById("invoicePaymentStatus").value = existing?.payment_status ?? "Paid";
+    document.getElementById("invoiceWarranty").value = existing?.warranty ?? "";
+    document.getElementById("invoiceRemarks").value = existing?.remarks ?? "";
+
+    invoiceParts = Array.isArray(existing?.parts) && existing.parts.length ? existing.parts.map(p=>({name:p.name||"",price:Number(p.price||0)})) : [{name:"",price:0}];
+    renderInvoiceParts();
+    calculateInvoiceTotal();
+    document.getElementById("invoicePrintArea").style.display = "none";
+    if(existing) renderInvoicePreview(existing);
+    document.getElementById("invoiceModal").style.display = "flex";
+}
+
+function printInvoice(){
+    if(!currentInvoice){
+        alert("Pehle invoice save karein, phir PDF print karein.");
+        return;
+    }
+    renderInvoicePreview(currentInvoice);
+    setTimeout(()=>window.print(),100);
+}
+
+function whatsappInvoice(){
+    const invoice = currentInvoice;
+    if(!invoice){
+        alert("Pehle invoice save karein.");
+        return;
+    }
+    let phone = String(invoice.customer_mobile||"").replace(/\D/g,"");
+    if(phone.length===10) phone="91"+phone;
+    if(!phone){
+        alert("❌ Customer mobile number available nahi hai.");
+        return;
+    }
+    const message = `Hello ${invoice.customer_name||""} 👋\n\nMy ElectroCare se aapka service invoice ready hai.\n\nInvoice: ${invoice.invoice_number}\nComplaint ID: ${invoice.complaint_id}\nAppliance: ${invoice.appliance||"-"}\nWork Done: ${invoice.work_done||"-"}\nGrand Total: ₹${money(invoice.grand_total)}\nPayment: ${invoice.payment_status||"-"}\n\nThank you for choosing My ElectroCare 🙏`;
+    window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(message),"_blank");
+}
+
+
+
+/* =====================================
+   INVOICE SYSTEM
+===================================== */
+
+function openInvoiceModal(){
+
+    if(!currentComplaint){
+        alert("❌ Complaint select nahi hai.");
+        return;
+    }
+
+    document.getElementById("invoiceCustomer").innerText =
+        currentComplaint.customer_name || "-";
+
+    document.getElementById("invoiceMobile").innerText =
+        currentComplaint.mobile || "-";
+
+    document.getElementById("invoiceComplaintId").innerText =
+        currentComplaint.id || "-";
+
+    document.getElementById("invoiceAppliance").innerText =
+        (currentComplaint.product || "-") +
+        " / " +
+        (currentComplaint.company || "-");
+
+    document.getElementById("invoiceWorkDone").value = "";
+    document.getElementById("invoiceParts").value = "";
+    document.getElementById("invoicePartCharge").value = 0;
+    document.getElementById("invoiceServiceCharge").value = 0;
+    document.getElementById("invoiceVisitingCharge").value = 0;
+    document.getElementById("invoiceOtherCharge").value = 0;
+    document.getElementById("invoicePaymentStatus").value = "Pending";
+    document.getElementById("invoiceWarranty").value = "";
+    document.getElementById("invoiceRemarks").value = "";
+
+    calculateInvoiceTotal();
+
+    document.getElementById("invoiceModal").style.display = "flex";
+}
+
+
+function closeInvoiceModal(){
+
+    document.getElementById("invoiceModal").style.display = "none";
+
+}
+
+
+function moneyNumber(id){
+
+    const value = Number(
+        document.getElementById(id).value
+    );
+
+    return Number.isFinite(value) && value > 0
+        ? value
+        : 0;
+}
+
+
+function calculateInvoiceTotal(){
+
+    const part =
+        moneyNumber("invoicePartCharge");
+
+    const service =
+        moneyNumber("invoiceServiceCharge");
+
+    const visiting =
+        moneyNumber("invoiceVisitingCharge");
+
+    const other =
+        moneyNumber("invoiceOtherCharge");
+
+    const total =
+        part + service + visiting + other;
+
+    document.getElementById("invoiceGrandTotal").innerText =
+        "₹" + total.toLocaleString("en-IN", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        });
+
+    return total;
+}
+
+
+function generateInvoiceNumber(){
+
+    const now = new Date();
+
+    const date =
+        now.getFullYear().toString() +
+        String(now.getMonth()+1).padStart(2,"0") +
+        String(now.getDate()).padStart(2,"0");
+
+    const time =
+        String(now.getHours()).padStart(2,"0") +
+        String(now.getMinutes()).padStart(2,"0") +
+        String(now.getSeconds()).padStart(2,"0");
+
+    return "MC-" + date + "-" + time;
+}
+
+
+async function saveInvoice(){
+
+    if(!currentComplaint){
+        alert("❌ Complaint select nahi hai.");
+        return;
+    }
+
+    const { data:userData } =
+        await supabaseClient.auth.getUser();
+
+    if(!userData || !userData.user){
+        alert("❌ Please login first.");
+        return;
+    }
+
+    const total = calculateInvoiceTotal();
+
+    if(total <= 0){
+        alert("⚠️ Kam se kam ek charge enter karein.");
+        return;
+    }
+
+    const partsText =
+        document.getElementById("invoiceParts").value.trim();
+
+    const partsArray =
+        partsText
+        ? partsText
+            .split("\n")
+            .map(x => x.trim())
+            .filter(Boolean)
+        : [];
+
+    const invoice = {
+
+        invoice_number: generateInvoiceNumber(),
+
+        complaint_id:
+            Number(currentComplaint.id),
+
+        customer_name:
+            currentComplaint.customer_name || "",
+
+        customer_mobile:
+            currentComplaint.mobile || "",
+
+        customer_address:
+            currentComplaint.address || "",
+
+        appliance:
+            currentComplaint.product || "",
+
+        brand:
+            currentComplaint.company || "",
+
+        model:
+            currentComplaint.model || "",
+
+        complaint:
+            currentComplaint.problem || "",
+
+        work_done:
+            document.getElementById("invoiceWorkDone").value.trim(),
+
+        parts:
+            partsArray,
+
+        service_charge:
+            moneyNumber("invoiceServiceCharge"),
+
+        visiting_charge:
+            moneyNumber("invoiceVisitingCharge"),
+
+        other_charge:
+            moneyNumber("invoiceOtherCharge"),
+
+        grand_total:
+            total,
+
+        payment_status:
+            document.getElementById("invoicePaymentStatus").value,
+
+        warranty:
+            document.getElementById("invoiceWarranty").value.trim(),
+
+        remarks:
+            document.getElementById("invoiceRemarks").value.trim()
+    };
+
+
+    const { data, error } =
+        await supabaseClient
+        .from("Invoices")
+        .insert(invoice)
+        .select("*")
+        .single();
+
+
+    if(error){
+
+        console.error("Invoice save error:", error);
+
+        alert(
+            "❌ Invoice save nahi hui:\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    alert(
+        "✅ Invoice successfully save ho gayi!\n\n" +
+        "Invoice No: " +
+        data.invoice_number
+    );
+
+    closeInvoiceModal();
+
+    openInvoicePreview(data);
+}
+
+
+/* =====================================
+   INVOICE PREVIEW
+===================================== */
+
+function openInvoicePreview(invoice){
+
+    const parts =
+        Array.isArray(invoice.parts)
+        ? invoice.parts
+        : [];
+
+    const partsHTML =
+        parts.length
+        ? parts.map(p =>
+            `<div style="padding:5px 0;border-bottom:1px solid #eee;">
+                ${escapeHTML(p)}
+             </div>`
+          ).join("")
+        : "No parts added";
+
+    const preview =
+`
+<div style="
+    max-width:700px;
+    margin:20px auto;
+    background:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 5px 25px rgba(0,0,0,.12);
+">
+
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        gap:20px;
+        border-bottom:2px solid #087ff5;
+        padding-bottom:18px;
+    ">
+
+        <div>
+            <h1 style="margin:0;color:#087ff5;">
+                ⚡ My ElectroCare
+            </h1>
+
+            <p style="margin:5px 0;color:#64748b;">
+                Electronics Repair & Home Service
+            </p>
+        </div>
+
+        <div style="text-align:right;">
+            <b>INVOICE</b><br>
+            ${escapeHTML(invoice.invoice_number)}
+        </div>
+
+    </div>
+
+    <div style="margin-top:20px;">
+        <b>Customer</b><br>
+        ${escapeHTML(invoice.customer_name || "-")}<br>
+        ${escapeHTML(invoice.customer_mobile || "-")}<br>
+        ${escapeHTML(invoice.customer_address || "-")}
+    </div>
+
+    <div style="
+        margin-top:20px;
+        padding:15px;
+        background:#f8fafc;
+        border-radius:10px;
+    ">
+
+        <b>Appliance:</b>
+        ${escapeHTML(invoice.appliance || "-")}
+        <br>
+
+        <b>Brand:</b>
+        ${escapeHTML(invoice.brand || "-")}
+        <br>
+
+        <b>Complaint ID:</b>
+        ${invoice.complaint_id || "-"}
+        <br>
+
+        <b>Problem:</b>
+        ${escapeHTML(invoice.complaint || "-")}
+
+    </div>
+
+    <h3 style="margin-top:25px;">🔧 Work Done</h3>
+
+    <p>
+        ${escapeHTML(invoice.work_done || "-")}
+    </p>
+
+    <h3>🔩 Parts</h3>
+
+    <div>
+        ${partsHTML}
+    </div>
+
+    <table style="
+        width:100%;
+        margin-top:20px;
+        border-collapse:collapse;
+    ">
+
+        <tr>
+            <td style="padding:8px;">Part Charges</td>
+            <td style="padding:8px;text-align:right;">
+                ₹${Number(invoice.parts?.length ? invoice.grand_total - invoice.service_charge - invoice.visiting_charge - invoice.other_charge : 0).toLocaleString("en-IN")}
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px;">Service Charge</td>
+            <td style="padding:8px;text-align:right;">
+                ₹${Number(invoice.service_charge || 0).toLocaleString("en-IN")}
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px;">Visiting Charge</td>
+            <td style="padding:8px;text-align:right;">
+                ₹${Number(invoice.visiting_charge || 0).toLocaleString("en-IN")}
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding:8px;">Other Charge</td>
+            <td style="padding:8px;text-align:right;">
+                ₹${Number(invoice.other_charge || 0).toLocaleString("en-IN")}
+            </td>
+        </tr>
+
+        <tr style="font-size:20px;font-weight:bold;border-top:2px solid #111;">
+            <td style="padding:12px;">Grand Total</td>
+            <td style="padding:12px;text-align:right;">
+                ₹${Number(invoice.grand_total || 0).toLocaleString("en-IN")}
+            </td>
+        </tr>
+
+    </table>
+
+    <div style="margin-top:20px;">
+        <b>Payment:</b>
+        ${escapeHTML(invoice.payment_status || "Pending")}
+    </div>
+
+    <div style="margin-top:10px;">
+        <b>Warranty:</b>
+        ${escapeHTML(invoice.warranty || "-")}
+    </div>
+
+    <div style="margin-top:10px;">
+        <b>Remarks:</b>
+        ${escapeHTML(invoice.remarks || "-")}
+    </div>
+
+    <p style="
+        margin-top:30px;
+        text-align:center;
+        color:#64748b;
+    ">
+        Thank you for choosing My ElectroCare 🙏
+    </p>
+
+</div>
+`;
+
+    const win =
+        window.open(
+            "",
+            "_blank",
+            "width=850,height=900"
+        );
+
+    if(!win){
+        alert("⚠️ Popup blocked. Browser me popups allow karein.");
+        return;
+    }
+
+    win.document.write(`
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${escapeHTML(invoice.invoice_number)}</title>
+<style>
+body{
+    margin:0;
+    padding:20px;
+    background:#f1f5f9;
+    font-family:Arial,sans-serif;
+}
+@media print{
+    body{
+        background:white;
+        padding:0;
+    }
+}
+</style>
+</head>
+<body>
+
+${preview}
+
+<div style="text-align:center;margin:20px;">
+<button onclick="window.print()"
+style="
+padding:12px 25px;
+background:#087ff5;
+color:white;
+border:0;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+">
+🖨️ Print / Save PDF
+</button>
+</div>
+
+</body>
+</html>
+`);
+
+    win.document.close();
+}
 
 /* =====================================
    CLOSE MODAL
