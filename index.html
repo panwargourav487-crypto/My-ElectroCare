@@ -254,39 +254,52 @@ result.innerHTML=`<div class="status-card">
 }
 
 async function checkComplaintStatus(){
-const id=document.getElementById("checkComplaintId").value.trim();
-const mobile=document.getElementById("checkMobile").value.trim();
-const result=document.getElementById("complaintStatusResult");
 
-if(!id||!mobile){
-result.style.display="block";
-result.innerHTML='<div class="status-error">⚠️ Complaint ID aur Mobile Number enter karein.</div>';
-return;
-}
+    const id = document.getElementById("checkComplaintId").value.trim();
+    const mobile = document.getElementById("checkMobile").value.trim();
+    const result = document.getElementById("complaintStatusResult");
 
-const cleanMobile=mobile.replace(/\D/g,"");
+    if(!id || !mobile){
+        result.style.display = "block";
+        result.innerHTML = '<div class="status-error">⚠️ Complaint ID aur Mobile Number enter karein.</div>';
+        return;
+    }
 
-const {data,error}=await supabaseClient
-.from("Complaints")
-.select("id,status")
-.eq("id",Number(id))
-.eq("mobile",mobile)
-.maybeSingle();
+    const cleanMobile = mobile.replace(/\D/g,"");
 
-if(error){
-console.error(error);
-result.style.display="block";
-result.innerHTML='<div class="status-error">❌ Status check nahi ho paya. Please try again.</div>';
-return;
-}
+    if(cleanMobile.length < 10){
+        result.style.display = "block";
+        result.innerHTML = '<div class="status-error">⚠️ Please enter a valid mobile number.</div>';
+        return;
+    }
 
-if(!data){
-result.style.display="block";
-result.innerHTML='<div class="status-error">❌ Complaint nahi mili. Complaint ID aur Mobile Number check karein.</div>';
-return;
-}
+    result.style.display = "block";
+    result.innerHTML = `
+        <div style="padding:15px;text-align:center;color:#64748b;">
+            🔍 Complaint status check ho raha hai...
+        </div>
+    `;
 
-renderStatus(data.status,data.id);
+    const { data, error } = await supabaseClient.rpc(
+        "check_complaint_status",
+        {
+            p_id: Number(id),
+            p_mobile: cleanMobile
+        }
+    );
+
+    if(error){
+        console.error("Status Check Error:", error);
+        result.innerHTML = '<div class="status-error">❌ Status check nahi ho paya. Please try again.</div>';
+        return;
+    }
+
+    if(!data || data.length === 0){
+        result.innerHTML = '<div class="status-error">❌ Complaint nahi mili. Complaint ID aur Mobile Number check karein.</div>';
+        return;
+    }
+
+    renderStatus(data[0].status, data[0].id);
 }
 </script>
 </body>
