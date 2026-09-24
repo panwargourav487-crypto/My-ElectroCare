@@ -137,8 +137,8 @@ footer{padding:32px 15px;background:#061a33;color:#fff;text-align:center}footer 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = "https://gbtqdwrrgcxomwhthban.supabase.co";
-const SUPABASE_KEY = "sb_publishable_UK8p20y1pifgQqEwxzo3Mw_Da5SKxD3";
+const SUPABASE_URL = 
+const SUPABASE_KEY = 
 const supabaseClient = supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 function scrollToServices(){document.getElementById("services").scrollIntoView({behavior:"smooth"})}
@@ -173,84 +173,111 @@ p=>{window.homeLatitude=p.coords.latitude;window.homeLongitude=p.coords.longitud
 }
 
 async function submitComplaint(){
-const product=document.getElementById("selectedProduct").innerText.replace("Selected Product: ","").trim();
-const company=document.getElementById("company").value;
-const name=document.getElementById("customerName").value.trim();
-const mobile=document.getElementById("customerMobile").value.trim();
-const problem=document.getElementById("problem").value.trim();
-const address=document.getElementById("customerAddress").value.trim();
-const requiredTime=document.getElementById("requiredTime").value;
-const photo=document.getElementById("problemPhoto").files[0];
 
-if(!name||!mobile||!company||!problem||!address||!requiredTime){
-alert("⚠️ Please fill all details.");return;
-}
+  const product = document.getElementById("selectedProduct")
+    .innerText.replace("Selected Product: ","").trim();
 
-const cleanMobile=mobile.replace(/\D/g,"");
-if(cleanMobile.length<10){alert("⚠️ Please enter a valid mobile number.");return}
+  const company = document.getElementById("company").value;
+  const name = document.getElementById("customerName").value.trim();
+  const mobile = document.getElementById("customerMobile").value.trim();
+  const problem = document.getElementById("problem").value.trim();
+  const address = document.getElementById("customerAddress").value.trim();
+  const requiredTime = document.getElementById("requiredTime").value;
+  const photo = document.getElementById("problemPhoto").files[0];
 
-let imageUrl=null;
+  if(!name || !mobile || !company || !problem || !address || !requiredTime){
+    alert("⚠️ Please fill all details.");
+    return;
+  }
 
-if(photo){
-const fileName=Date.now()+"_"+photo.name.replace(/\s/g,"_");
-const {error:uploadError}=await supabaseClient.storage.from("complaint-images").upload(fileName,photo);
-if(uploadError){alert("❌ Photo upload nahi hui: "+uploadError.message);return}
-const {data:publicData}=supabaseClient.storage.from("complaint-images").getPublicUrl(fileName);
-imageUrl=publicData.publicUrl;
-}
+  const cleanMobile = mobile.replace(/\D/g,"");
 
-const {data,error}=await supabaseClient.from("Complaints").insert([{
-customer_name:name,mobile:mobile,product:product,company:company,
-problem:problem,address:address,required_time:requiredTime,
-latitude:window.homeLatitude||null,longitude:window.homeLongitude||null,
-image_url:imageUrl,status:"Pending"
-}]).select();
+  if(cleanMobile.length < 10){
+    alert("⚠️ Please enter a valid mobile number.");
+    return;
+  }
 
-if(error){alert("❌ Complaint submit nahi hui: "+error.message);return}
+  let imageUrl = null;
 
-alert("✅ Complaint successfully submitted!\n\nComplaint ID: "+data[0].id+"\n\nIs Complaint ID ko save karke rakhein.");
+  /* PHOTO UPLOAD */
+  if(photo){
 
-document.getElementById("customerName").value="";
-document.getElementById("customerMobile").value="";
-document.getElementById("problem").value="";
-document.getElementById("customerAddress").value="";
-document.getElementById("requiredTime").value="";
-document.getElementById("company").value="";
-document.getElementById("problemPhoto").value="";
-document.getElementById("locationStatus").innerText="Location not added";
-window.homeLatitude=null;window.homeLongitude=null;
-}
+    const fileName =
+      Date.now() + "_" +
+      photo.name.replace(/\s/g,"_");
 
-function statusClass(status){
-const s=(status||"").toLowerCase();
-if(s==="pending")return"pending";
-if(s==="accepted")return"accepted";
-if(s==="completed")return"completed";
-if(s==="rejected")return"rejected";
-return"";
-}
+    const { error: uploadError } =
+      await supabaseClient
+        .storage
+        .from("complaint-images")
+        .upload(fileName, photo);
 
-function renderStatus(status,id){
-const result=document.getElementById("complaintStatusResult");
-const s=(status||"Pending").toLowerCase();
-const order=["pending","accepted","completed","rejected"];
-let currentIndex=order.indexOf(s);
-if(currentIndex<0)currentIndex=0;
+    if(uploadError){
+      alert("❌ Photo upload nahi hui: " + uploadError.message);
+      return;
+    }
 
-let timeline="";
-["Pending","Accepted","Completed","Rejected"].forEach((name,i)=>{
-const active=i===3 ? s==="rejected" : i<=currentIndex && s!=="rejected";
-timeline+=`<div class="timeline-item ${active?"active":""} ${s===name.toLowerCase()?"current":""}">
-<div class="dot">${active?"✓":i+1}</div><span>${name}</span></div>`;
-});
+    const { data: publicData } =
+      supabaseClient
+        .storage
+        .from("complaint-images")
+        .getPublicUrl(fileName);
 
-result.style.display="block";
-result.innerHTML=`<div class="status-card">
-<h3>Complaint #${id}</h3>
-<div class="status-id">Current service status</div>
-<span class="status-badge ${statusClass(status)}">${s.toUpperCase()}</span>
-<div class="timeline">${timeline}</div>
-</div>`;
+    imageUrl = publicData.publicUrl;
+  }
+
+  /* COMPLAINT INSERT THROUGH SECURE RPC */
+  const { data, error } =
+    await supabaseClient.rpc(
+      "submit_complaint",
+      {
+        p_customer_name: name,
+        p_mobile: cleanMobile,
+        p_product: product,
+        p_company: company,
+        p_problem: problem,
+        p_address: address,
+        p_required_time: requiredTime,
+        p_latitude: window.homeLatitude || null,
+        p_longitude: window.homeLongitude || null,
+        p_image_url: imageUrl
+      }
+    );
+
+  if(error){
+    console.error("Complaint Submit Error:", error);
+
+    alert(
+      "❌ Complaint submit nahi hui.\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+  const complaintId = data;
+
+  alert(
+    "✅ Complaint successfully submitted!\n\n" +
+    "Complaint ID: " + complaintId +
+    "\n\nIs Complaint ID ko save karke rakhein."
+  );
+
+  /* RESET FORM */
+
+  document.getElementById("customerName").value = "";
+  document.getElementById("customerMobile").value = "";
+  document.getElementById("problem").value = "";
+  document.getElementById("customerAddress").value = "";
+  document.getElementById("requiredTime").value = "";
+  document.getElementById("company").value = "";
+  document.getElementById("problemPhoto").value = "";
+
+  document.getElementById("locationStatus").innerText =
+    "Location not added";
+
+  window.homeLatitude = null;
+  window.homeLongitude = null;
 }
 
 async function checkComplaintStatus(){
