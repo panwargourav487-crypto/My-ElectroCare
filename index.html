@@ -356,26 +356,25 @@ function renderStatus(status, id) {
 
     status = (status || "pending").trim().toLowerCase();
 
+    const isPending = status === "pending";
+    const isAccepted = status === "accepted";
+    const isCompleted = status === "completed";
+    const isRejected = status === "rejected";
+
     let statusText = "PENDING";
     let statusClass = "pending";
-    let statusIcon = "✓";
 
-    if (status === "accepted") {
+    if (isAccepted) {
         statusText = "ACCEPTED";
         statusClass = "accepted";
-        statusIcon = "✓";
     }
-
-    else if (status === "completed") {
+    else if (isCompleted) {
         statusText = "COMPLETED";
         statusClass = "completed";
-        statusIcon = "✓";
     }
-
-    else if (status === "rejected") {
+    else if (isRejected) {
         statusText = "REJECTED";
         statusClass = "rejected";
-        statusIcon = "✕";
     }
 
     return `
@@ -390,80 +389,94 @@ function renderStatus(status, id) {
             <div class="status-badge ${statusClass}">
                 <span style="
                     display:inline-flex;
-                    width:24px;
-                    height:24px;
+                    width:30px;
+                    height:30px;
                     align-items:center;
                     justify-content:center;
                     border-radius:6px;
                     background:currentColor;
-                    color:white;
-                    font-size:13px;
-                ">${statusIcon}</span>
+                    color:#fff;
+                    font-size:15px;
+                    margin-right:8px;
+                ">
+                    ${isRejected ? "✕" : "✓"}
+                </span>
 
                 ${statusText}
             </div>
 
             <div class="timeline">
 
-                <div class="timeline-item active">
-                    <div class="dot" style="background:#16a34a;color:#fff;">
-                        ✓
-                    </div>
-                    <span>Complaint<br>Received</span>
-                </div>
-
-                <div class="timeline-item ${status === "pending" ? "active" : ""}">
+                <!-- PENDING -->
+                <div class="timeline-item">
                     <div class="dot" style="
-                        background:${status === "pending" ? "#f5b400" : "#e2e8f0"};
-                        color:${status === "pending" ? "#fff" : "#64748b"};
+                        background:${isPending ? "#f5b400" : "#e2e8f0"};
+                        color:${isPending ? "#fff" : "#64748b"};
                     ">
                         ✓
                     </div>
                     <span style="
-                        color:${status === "pending" ? "#9a6700" : "#64748b"};
+                        color:${isPending ? "#b07800" : "#64748b"};
                     ">
                         Pending
                     </span>
                 </div>
 
-                <div class="timeline-item ${status === "accepted" ? "active" : ""}">
+                <!-- ACCEPTED -->
+                <div class="timeline-item">
                     <div class="dot" style="
-                        background:${status === "accepted" ? "#1683f7" : "#e2e8f0"};
-                        color:${status === "accepted" ? "#fff" : "#64748b"};
+                        background:${isAccepted ? "#1683f7" : "#e2e8f0"};
+                        color:${isAccepted ? "#fff" : "#64748b"};
                     ">
                         ✓
                     </div>
                     <span style="
-                        color:${status === "accepted" ? "#0756b8" : "#64748b"};
+                        color:${isAccepted ? "#0756b8" : "#64748b"};
                     ">
                         Accepted
                     </span>
                 </div>
 
-                <div class="timeline-item ${status === "completed" ? "active" : ""}">
+                <!-- COMPLETED -->
+                <div class="timeline-item">
                     <div class="dot" style="
-                        background:${status === "completed" ? "#16a34a" : "#e2e8f0"};
-                        color:${status === "completed" ? "#fff" : "#64748b"};
+                        background:${isCompleted ? "#16a34a" : "#e2e8f0"};
+                        color:${isCompleted ? "#fff" : "#64748b"};
                     ">
                         ✓
                     </div>
                     <span style="
-                        color:${status === "completed" ? "#087a3d" : "#64748b"};
+                        color:${isCompleted ? "#087a3d" : "#64748b"};
                     ">
                         Completed
+                    </span>
+                </div>
+
+                <!-- REJECTED -->
+                <div class="timeline-item">
+                    <div class="dot" style="
+                        background:${isRejected ? "#dc2626" : "#e2e8f0"};
+                        color:${isRejected ? "#fff" : "#64748b"};
+                    ">
+                        ${isRejected ? "✕" : "✓"}
+                    </div>
+                    <span style="
+                        color:${isRejected ? "#b91c1c" : "#64748b"};
+                    ">
+                        Rejected
                     </span>
                 </div>
 
             </div>
 
             ${
-                status === "rejected"
+                isRejected
                 ? `
                 <div style="
                     margin-top:20px;
                     padding:12px;
                     border-radius:10px;
-                    background:#ffe1df;
+                    background:#ffe1e1;
                     color:#b42318;
                     font-weight:700;
                     text-align:center;
