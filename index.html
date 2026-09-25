@@ -352,64 +352,127 @@ async function submitComplaint(){
   window.homeLatitude = null;
   window.homeLongitude = null;
 }
-function renderStatus(complaint) {
+function renderStatus(status, id) {
 
-    const status = (complaint.status || "Pending").trim().toLowerCase();
+    status = (status || "pending").trim().toLowerCase();
 
     let statusText = "PENDING";
-    let statusClass = "status-pending";
+    let statusClass = "pending";
     let statusIcon = "✓";
 
     if (status === "accepted") {
         statusText = "ACCEPTED";
-        statusClass = "status-accepted";
+        statusClass = "accepted";
         statusIcon = "✓";
     }
 
     else if (status === "completed") {
         statusText = "COMPLETED";
-        statusClass = "status-completed";
+        statusClass = "completed";
         statusIcon = "✓";
     }
 
     else if (status === "rejected") {
         statusText = "REJECTED";
-        statusClass = "status-rejected";
+        statusClass = "rejected";
         statusIcon = "✕";
     }
 
     return `
-        <div class="complaint-status-card">
+        <div class="status-card">
 
-            <h2>Complaint ${complaint.id}</h2>
+            <h3>Complaint #${id}</h3>
 
-            <div class="status-box ${statusClass}">
-                <span class="status-icon">${statusIcon}</span>
-                <span>${statusText}</span>
+            <div class="status-id">
+                Current Complaint Status
             </div>
 
-            <div class="status-timeline">
+            <div class="status-badge ${statusClass}">
+                <span style="
+                    display:inline-flex;
+                    width:24px;
+                    height:24px;
+                    align-items:center;
+                    justify-content:center;
+                    border-radius:6px;
+                    background:currentColor;
+                    color:white;
+                    font-size:13px;
+                ">${statusIcon}</span>
+
+                ${statusText}
+            </div>
+
+            <div class="timeline">
 
                 <div class="timeline-item active">
-                    <div class="timeline-circle blue">✓</div>
-                    <div>Complaint<br>Received</div>
+                    <div class="dot" style="background:#16a34a;color:#fff;">
+                        ✓
+                    </div>
+                    <span>Complaint<br>Received</span>
                 </div>
 
-                <div class="timeline-line"></div>
-
-                <div class="timeline-item ${status === "accepted" || status === "completed" ? "active" : ""}">
-                    <div class="timeline-circle ${status === "accepted" || status === "completed" ? "blue" : "gray"}">✓</div>
-                    <div>Accepted</div>
+                <div class="timeline-item ${status === "pending" ? "active" : ""}">
+                    <div class="dot" style="
+                        background:${status === "pending" ? "#f5b400" : "#e2e8f0"};
+                        color:${status === "pending" ? "#fff" : "#64748b"};
+                    ">
+                        ✓
+                    </div>
+                    <span style="
+                        color:${status === "pending" ? "#9a6700" : "#64748b"};
+                    ">
+                        Pending
+                    </span>
                 </div>
 
-                <div class="timeline-line"></div>
+                <div class="timeline-item ${status === "accepted" ? "active" : ""}">
+                    <div class="dot" style="
+                        background:${status === "accepted" ? "#1683f7" : "#e2e8f0"};
+                        color:${status === "accepted" ? "#fff" : "#64748b"};
+                    ">
+                        ✓
+                    </div>
+                    <span style="
+                        color:${status === "accepted" ? "#0756b8" : "#64748b"};
+                    ">
+                        Accepted
+                    </span>
+                </div>
 
                 <div class="timeline-item ${status === "completed" ? "active" : ""}">
-                    <div class="timeline-circle ${status === "completed" ? "green" : "gray"}">✓</div>
-                    <div>Completed</div>
+                    <div class="dot" style="
+                        background:${status === "completed" ? "#16a34a" : "#e2e8f0"};
+                        color:${status === "completed" ? "#fff" : "#64748b"};
+                    ">
+                        ✓
+                    </div>
+                    <span style="
+                        color:${status === "completed" ? "#087a3d" : "#64748b"};
+                    ">
+                        Completed
+                    </span>
                 </div>
 
             </div>
+
+            ${
+                status === "rejected"
+                ? `
+                <div style="
+                    margin-top:20px;
+                    padding:12px;
+                    border-radius:10px;
+                    background:#ffe1df;
+                    color:#b42318;
+                    font-weight:700;
+                    text-align:center;
+                ">
+                    ✕ Complaint Rejected
+                </div>
+                `
+                : ""
+            }
 
         </div>
     `;
