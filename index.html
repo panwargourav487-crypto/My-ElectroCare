@@ -279,6 +279,58 @@ async function submitComplaint(){
   window.homeLatitude = null;
   window.homeLongitude = null;
 }
+  function renderStatus(status, id) {
+
+    const result = document.getElementById("complaintStatusResult");
+
+    if (!result) {
+        console.error("complaintStatusResult not found");
+        return;
+    }
+
+    const currentStatus = status || "Pending";
+
+    result.style.display = "block";
+
+    result.innerHTML = `
+        <div class="status-card">
+
+            <h3>Complaint #${id}</h3>
+
+            <div class="status-badge">
+                ${currentStatus.toUpperCase()}
+            </div>
+
+            <div class="timeline">
+
+                <div class="timeline-item active">
+                    <div class="dot">✓</div>
+                    <span>Complaint Received</span>
+                </div>
+
+                <div class="timeline-item ${
+                    currentStatus.toLowerCase() !== "pending"
+                    ? "active"
+                    : ""
+                }">
+                    <div class="dot">✓</div>
+                    <span>Accepted</span>
+                </div>
+
+                <div class="timeline-item ${
+                    currentStatus.toLowerCase() === "completed"
+                    ? "active"
+                    : ""
+                }">
+                    <div class="dot">✓</div>
+                    <span>Completed</span>
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
 
 async function checkComplaintStatus(){
 
