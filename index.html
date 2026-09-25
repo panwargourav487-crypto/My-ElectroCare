@@ -48,11 +48,84 @@ section{width:100%}
 .status-section{background:linear-gradient(#fff,#f5f8fc)}
 .status-result{display:none;margin-top:20px}.status-card{padding:20px;border-radius:16px;background:#f8fafc;border:1px solid #e2e8f0}
 .status-card h3{margin-bottom:3px}.status-id{color:#64748b;font-size:13px;margin-bottom:15px}
-.status-badge{display:inline-block;padding:8px 14px;border-radius:30px;font-weight:800;font-size:14px}
-.pending{background:#fff7ed;color:#c2410c}.accepted{background:#eff6ff;color:#1d4ed8}.completed{background:#ecfdf5;color:#047857}.rejected{background:#fef2f2;color:#b91c1c}
-.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:22px}.timeline-item{text-align:center}
-.dot{width:30px;height:30px;margin:0 auto 6px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e2e8f0;color:#64748b;font-weight:800;font-size:12px}
-.timeline-item.active .dot{background:#087ff5;color:#fff}.timeline-item span{font-size:10px;color:#64748b;font-weight:700}.timeline-item.active span{color:#087ff5}
+.status-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 15px;
+    border-radius:10px;
+    font-weight:800;
+    font-size:14px;
+}
+
+/* 🟡 PENDING */
+.pending{
+    background:#fff4c2;
+    color:#9a6700;
+    border:1px solid #f5c542;
+}
+
+/* 🔵 ACCEPTED */
+.accepted{
+    background:#dceeff;
+    color:#0756b8;
+    border:1px solid #1683f7;
+}
+
+/* 🟢 COMPLETED */
+.completed{
+    background:#dff7e8;
+    color:#087a3d;
+    border:1px solid #16a34a;
+}
+
+/* 🔴 REJECTED */
+.rejected{
+    background:#ffe1df;
+    color:#b42318;
+    border:1px solid #dc2626;
+}
+
+/* STATUS TIMELINE */
+.timeline{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+    margin-top:22px;
+}
+
+.timeline-item{
+    text-align:center;
+}
+
+.dot{
+    width:30px;
+    height:30px;
+    margin:0 auto 6px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#e2e8f0;
+    color:#64748b;
+    font-weight:800;
+    font-size:12px;
+}
+
+.timeline-item.active .dot{
+    background:#1683f7;
+    color:#fff;
+}
+
+.timeline-item span{
+    font-size:10px;
+    color:#64748b;
+    font-weight:700;
+}
+
+.timeline-item.active span{
+    color:#1683f7;
+}
 .status-error{padding:14px;border-radius:12px;background:#fef2f2;color:#b91c1c;font-weight:700;font-size:14px}
 .status-tip{margin-top:15px;padding:11px 13px;border-radius:10px;background:#f8fafc;color:#64748b;font-size:13px}
 footer{padding:32px 15px;background:#061a33;color:#fff;text-align:center}footer p{color:#cbd5e1;font-size:14px}
@@ -279,51 +352,61 @@ async function submitComplaint(){
   window.homeLatitude = null;
   window.homeLongitude = null;
 }
-  function renderStatus(status, id) {
+function renderStatus(complaint) {
 
-    const result = document.getElementById("complaintStatusResult");
+    const status = (complaint.status || "Pending").trim().toLowerCase();
 
-    if (!result) {
-        console.error("complaintStatusResult not found");
-        return;
+    let statusText = "PENDING";
+    let statusClass = "status-pending";
+    let statusIcon = "✓";
+
+    if (status === "accepted") {
+        statusText = "ACCEPTED";
+        statusClass = "status-accepted";
+        statusIcon = "✓";
     }
 
-    const currentStatus = status || "Pending";
+    else if (status === "completed") {
+        statusText = "COMPLETED";
+        statusClass = "status-completed";
+        statusIcon = "✓";
+    }
 
-    result.style.display = "block";
+    else if (status === "rejected") {
+        statusText = "REJECTED";
+        statusClass = "status-rejected";
+        statusIcon = "✕";
+    }
 
-    result.innerHTML = `
-        <div class="status-card">
+    return `
+        <div class="complaint-status-card">
 
-            <h3>Complaint ${id}</h3>
+            <h2>Complaint ${complaint.id}</h2>
 
-            <div class="status-badge">
-                ${currentStatus.toUpperCase()}
+            <div class="status-box ${statusClass}">
+                <span class="status-icon">${statusIcon}</span>
+                <span>${statusText}</span>
             </div>
 
-            <div class="timeline">
+            <div class="status-timeline">
 
                 <div class="timeline-item active">
-                    <div class="dot">✓</div>
-                    <span>Complaint Received</span>
+                    <div class="timeline-circle blue">✓</div>
+                    <div>Complaint<br>Received</div>
                 </div>
 
-                <div class="timeline-item ${
-                    currentStatus.toLowerCase() !== "pending"
-                    ? "active"
-                    : ""
-                }">
-                    <div class="dot">✓</div>
-                    <span>Accepted</span>
+                <div class="timeline-line"></div>
+
+                <div class="timeline-item ${status === "accepted" || status === "completed" ? "active" : ""}">
+                    <div class="timeline-circle ${status === "accepted" || status === "completed" ? "blue" : "gray"}">✓</div>
+                    <div>Accepted</div>
                 </div>
 
-                <div class="timeline-item ${
-                    currentStatus.toLowerCase() === "completed"
-                    ? "active"
-                    : ""
-                }">
-                    <div class="dot">✓</div>
-                    <span>Completed</span>
+                <div class="timeline-line"></div>
+
+                <div class="timeline-item ${status === "completed" ? "active" : ""}">
+                    <div class="timeline-circle ${status === "completed" ? "green" : "gray"}">✓</div>
+                    <div>Completed</div>
                 </div>
 
             </div>
@@ -331,7 +414,6 @@ async function submitComplaint(){
         </div>
     `;
 }
-
 async function checkComplaintStatus(){
 
     const id = document.getElementById("checkComplaintId").value.trim();
