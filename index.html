@@ -288,24 +288,16 @@ async function checkComplaintStatus(){
 
     if(!id || !mobile){
         result.style.display = "block";
-        result.innerHTML = '<div class="status-error">⚠️ Complaint ID aur Mobile Number enter karein.</div>';
-        return;
-    }
-
-    const cleanMobile = mobile.replace(/\D/g,"");
-
-    if(cleanMobile.length < 10){
-        result.style.display = "block";
-        result.innerHTML = '<div class="status-error">⚠️ Please enter a valid mobile number.</div>';
+        result.innerHTML =
+            '<div class="status-error">⚠️ Complaint ID aur Mobile Number enter karein.</div>';
         return;
     }
 
     result.style.display = "block";
-    result.innerHTML = `
-        <div style="padding:15px;text-align:center;color:#64748b;">
-            🔍 Complaint status check ho raha hai...
-        </div>
-    `;
+    result.innerHTML =
+        '<div class="status-loading">🔍 Complaint status check ho raha hai...</div>';
+
+    const cleanMobile = mobile.replace(/\D/g, "");
 
     const { data, error } = await supabaseClient.rpc(
         "check_complaint_status",
@@ -315,18 +307,24 @@ async function checkComplaintStatus(){
         }
     );
 
+    console.log("Status Response:", data, error);
+
     if(error){
-        console.error("Status Check Error:", error);
-        result.innerHTML = '<div class="status-error">❌ Status check nahi ho paya. Please try again.</div>';
+        console.error("Status Error:", error);
+        result.innerHTML =
+            '<div class="status-error">❌ Status check nahi ho paya. Please try again.</div>';
         return;
     }
 
     if(!data || data.length === 0){
-        result.innerHTML = '<div class="status-error">❌ Complaint nahi mili. Complaint ID aur Mobile Number check karein.</div>';
+        result.innerHTML =
+            '<div class="status-error">❌ Complaint nahi mili. Complaint ID aur Mobile Number check karein.</div>';
         return;
     }
 
-    renderStatus(data[0].status, data[0].id);
+    const complaint = data[0];
+
+    renderStatus(complaint.status, complaint.id);
 }
 </script>
 </body>
